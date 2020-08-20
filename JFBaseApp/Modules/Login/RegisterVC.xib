@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -159,19 +159,13 @@
                         <constraint firstAttribute="width" constant="1" id="fnp-A5-y62"/>
                     </constraints>
                 </view>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="eml-tp-IJA">
-                    <rect key="frame" x="127.66666666666669" y="178" width="120" height="52.666666666666657"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="120" id="A5N-fS-LKk"/>
-                    </constraints>
-                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U5W-E9-Fba">
                     <rect key="frame" x="10" y="44" width="35" height="35"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="12x-5D-7Bh"/>
                         <constraint firstAttribute="width" constant="35" id="1Oi-K4-I63"/>
                     </constraints>
-                    <state key="normal" image="login_cha.png"/>
+                    <state key="normal" image="back_icon.png"/>
                     <connections>
                         <action selector="dismissVcBack:" destination="-1" eventType="touchUpInside" id="3ho-Tr-s2g"/>
                     </connections>
@@ -188,7 +182,6 @@
                 <constraint firstAttribute="bottom" secondItem="vA4-pl-NrY" secondAttribute="bottom" constant="40" id="3T1-50-VqW"/>
                 <constraint firstItem="ZtD-qX-HaN" firstAttribute="centerY" secondItem="unA-t9-wgd" secondAttribute="centerY" id="3Xo-Gs-vDz"/>
                 <constraint firstItem="ZtD-qX-HaN" firstAttribute="leading" secondItem="7kP-WN-ESY" secondAttribute="leading" id="56S-96-sj3"/>
-                <constraint firstItem="SQu-kB-tgm" firstAttribute="top" secondItem="eml-tp-IJA" secondAttribute="bottom" constant="50" id="7cQ-RU-M1K"/>
                 <constraint firstItem="vA4-pl-NrY" firstAttribute="centerX" secondItem="6pC-HV-dbi" secondAttribute="centerX" id="Czy-6k-bpN"/>
                 <constraint firstAttribute="bottom" secondItem="6pC-HV-dbi" secondAttribute="bottom" id="I7w-CP-cv0"/>
                 <constraint firstItem="vA4-pl-NrY" firstAttribute="centerY" secondItem="8wH-hv-o2w" secondAttribute="centerY" id="LQD-wL-Mj1"/>
@@ -209,7 +202,6 @@
                 <constraint firstItem="x4Q-lg-gaV" firstAttribute="trailing" secondItem="ZtD-qX-HaN" secondAttribute="trailing" id="tKO-Vh-NB0"/>
                 <constraint firstItem="6pC-HV-dbi" firstAttribute="top" secondItem="unA-t9-wgd" secondAttribute="top" id="tj8-5w-jo8"/>
                 <constraint firstItem="8vn-7N-Yjl" firstAttribute="leading" secondItem="ZtD-qX-HaN" secondAttribute="leading" id="uw2-k6-qZe"/>
-                <constraint firstItem="eml-tp-IJA" firstAttribute="centerX" secondItem="6pC-HV-dbi" secondAttribute="centerX" id="xEC-iS-DKj"/>
                 <constraint firstItem="SQu-kB-tgm" firstAttribute="leading" secondItem="7kP-WN-ESY" secondAttribute="leading" id="ySf-Fr-WPQ"/>
                 <constraint firstItem="U5W-E9-Fba" firstAttribute="leading" secondItem="unA-t9-wgd" secondAttribute="leading" constant="10" id="yab-oS-NIW"/>
                 <constraint firstItem="8vn-7N-Yjl" firstAttribute="trailing" secondItem="ZtD-qX-HaN" secondAttribute="trailing" id="zTD-3n-hSO"/>
@@ -220,10 +212,9 @@
         </view>
     </objects>
     <resources>
-        <image name="login_account.png" width="30" height="30"/>
+        <image name="back_icon.png" width="22" height="22"/>
+        <image name="login_account.png" width="32" height="32"/>
         <image name="login_bg.png" width="360" height="640"/>
-        <image name="login_cha.png" width="45" height="45"/>
-        <image name="login_lock.png" width="30" height="30"/>
-        <image name="login_logo.png" width="150" height="52.5"/>
+        <image name="login_lock.png" width="32" height="32"/>
     </resources>
 </document>
