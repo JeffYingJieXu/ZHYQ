@@ -21,6 +21,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *inviteBtn;
 
+@property (weak, nonatomic) IBOutlet UITextField *mima;
+@property (weak, nonatomic) IBOutlet UITextField *suremima;
 
 @end
 

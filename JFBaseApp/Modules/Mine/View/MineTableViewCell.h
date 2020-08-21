@@ -13,4 +13,5 @@
 //cell 展示内容
 @property (nonatomic,copy) NSDictionary * cellData;
 
+@property(nonatomic,strong)UILabel *msgNums;
 @end

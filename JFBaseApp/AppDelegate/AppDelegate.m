@@ -28,7 +28,7 @@
     [self initService];
     
     //初始化IM
-    [[IMManager sharedIMManager] initIM];
+//    [[IMManager sharedIMManager] initIM];
     
     //初始化用户系统
     [self initUserManager];

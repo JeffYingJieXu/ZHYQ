@@ -8,19 +8,12 @@
 
 #import "MineViewController.h"
 #import "MineTableViewCell.h"
-#import "MineHeaderView.h"
-#import "ProfileViewController.h"
 #import "SettingViewController.h"
-#import "XYTransitionProtocol.h"
+#import "MineHeadV.h"
 
-#define KHeaderHeight ((260 * Iphone6ScaleWidth) + kStatusBarHeight)
-
-@interface MineViewController ()<UITableViewDelegate,UITableViewDataSource,headerViewDelegate,XYTransitionProtocol>
+@interface MineViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
-    UILabel * lbl;
     NSArray *_dataSource;
-    MineHeaderView *_headerView;//头部view
-    UIView *_NavView;//导航栏
 }
 @end
 
@@ -28,119 +21,68 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.isHidenNaviBar = YES;
+//    self.isHidenNaviBar = YES;
     self.StatusBarStyle = UIStatusBarStyleLightContent;
     self.isShowLiftBack = NO;//每个根视图需要设置该属性为NO，否则会出现导航栏异常
     
     [self createUI];
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self getRequset];
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    //    self.navigationController.delegate = self.navigationController;
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    //    [self ysl_removeTransitionDelegate];
-}
-
-#pragma mark ————— 拉取数据 —————
--(void)getRequset{
-    _headerView.userInfo = curUser;
-}
-
-#pragma mark ————— 头像被点击 —————
--(void)headerViewClick{
-    //    [self ysl_addTransitionDelegate:self];
-    ProfileViewController *profileVC = [ProfileViewController new];
-    profileVC.headerImage = _headerView.headImgView.image;
-    [self.navigationController pushViewController:profileVC animated:YES];
-}
-
-#pragma mark ————— 昵称被点击 —————
--(void)nickNameViewClick{
-    [self.navigationController pushViewController:[RootViewController new] animated:YES];
-}
-
-#pragma mark -- YSLTransitionAnimatorDataSource
-//-(UIImageView *)pushTransitionImageView{
-//    return _headerView.headImgView;
-//}
-//
-//- (UIImageView *)popTransitionImageView
-//{
-//    return nil;
-//}
--(UIView *)targetTransitionView{
-    return _headerView.headImgView;
-}
--(BOOL)isNeedTransition{
-    return YES;
 }
 
 
 #pragma mark ————— 创建页面 —————
 -(void)createUI{
-    self.tableView.height = KScreenHeight - kTabBarHeight;
+    self.tableView.height = KScreenHeight - kNavAndTabHeight;
     self.tableView.mj_header.hidden = YES;
     self.tableView.mj_footer.hidden = YES;
     [self.tableView registerClass:[MineTableViewCell class] forCellReuseIdentifier:@"MineTableViewCell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
-    _headerView = [[MineHeaderView alloc] initWithFrame:CGRectMake(0, -KHeaderHeight, KScreenWidth, KHeaderHeight)];
-    _headerView.delegate = self;
-    self.tableView.contentInset = UIEdgeInsetsMake(_headerView.height, 0, 0, 0);
-    [self.tableView addSubview:_headerView];
-    
-    
+    self.tableView.bounces = NO;
+    self.tableView.separatorColor = CViewBgColor;
     [self.view addSubview:self.tableView];
     
-    [self createNav];
+    MineHeadV *headv = [[[NSBundle mainBundle] loadNibNamed:@"MineHeadV" owner:self options:nil]firstObject];
+    headv.frame = CGRectMake(0, 0, KScreenWidth, 166);
+    self.tableView.tableHeaderView = headv;
     
-    NSDictionary *myWallet = @{@"titleText":@"我的钱包",@"clickSelector":@"",@"title_icon":@"qianb",@"detailText":@"10.00",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *myMission = @{@"titleText":@"我的任务",@"clickSelector":@"",@"title_icon":@"renw",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *myFriends = @{@"titleText":@"我的好友",@"clickSelector":@"",@"title_icon":@"haoy",@"arrow_icon":@"arrow_icon"};
-    NSDictionary *myLevel = @{@"titleText":@"我的等级",@"clickSelector":@"",@"title_icon":@"dengji",@"detailText":@"LV10",@"arrow_icon":@"arrow_icon"};
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
+        
+        LoginVC *vc = LoginVC.new;
+        vc.modalPresentationStyle = 0;
+        [self presentViewController:vc animated:YES completion:nil];
+    }];
+    [headv addGestureRecognizer:tap];
     
-    _dataSource = @[myWallet,myMission,myFriends,myLevel];
+    _dataSource = @[@[@{@"icon":@"mymsg",@"title":@"消息中心",@"right":@"arrow_icon"}],@[@{@"icon":@"myfeedback",@"title":@"用户留言",@"right":@"arrow_icon"},
+          @{@"icon":@"myabout",@"title":@"关于我们",@"right":@"arrow_icon"}],@[@{@"icon":@"myset",@"title":@"退出登录",@"right":@"arrow_icon"}]
+    ];
     [self.tableView reloadData];
-}
-#pragma mark ————— 创建自定义导航栏 —————
--(void)createNav{
-    _NavView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, KScreenWidth, kTopHeight)];
-    _NavView.backgroundColor = KClearColor;
-    
-    UILabel * titlelbl = [[UILabel alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, KScreenWidth/2, kNavBarHeight )];
-    titlelbl.centerX = _NavView.width/2;
-    titlelbl.textAlignment = NSTextAlignmentCenter;
-    titlelbl.font= SYSTEMFONT(17);
-    titlelbl.textColor = KWhiteColor;
-    titlelbl.text = self.title;
-    [_NavView addSubview:titlelbl];
-    
-    UIButton * btn = [UIButton buttonWithType:UIButtonTypeSystem];
-    [btn setTitle:@"设置" forState:UIControlStateNormal];
-    btn.titleLabel.font = SYSTEMFONT(16);
-    [btn setTitleColor:KWhiteColor forState:UIControlStateNormal];
-    [btn sizeToFit];
-    btn.frame = CGRectMake(_NavView.width - btn.width - 15, kStatusBarHeight, btn.width, 40);
-    [btn setTitleColor:KWhiteColor forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(changeUser) forControlEvents:UIControlEventTouchUpInside];
-    
-    [_NavView addSubview:btn];
-    
-    [self.view addSubview:_NavView];
 }
 
 #pragma mark ————— tableview 代理 —————
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return _dataSource.count;
+}
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [_dataSource[section] count];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{return 15;}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [UIView new];
+    view.backgroundColor = KClearColor;
+    return view;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -149,8 +91,11 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MineTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MineTableViewCell" forIndexPath:indexPath];
-    cell.cellData = _dataSource[indexPath.row];
+    cell.cellData = _dataSource[indexPath.section][indexPath.row];;
+  
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+  
     return cell;
 }
 
@@ -173,17 +118,6 @@
     }
 }
 
-#pragma mark ————— scrollView 代理 —————
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    CGFloat offset = scrollView.contentOffset.y ;
-    CGFloat totalOffsetY = scrollView.contentInset.top + offset;
-    
-    NSLog(@"offset    %.f   totalOffsetY %.f",offset,totalOffsetY);
-    //    if (totalOffsetY < 0) {
-    _headerView.frame = CGRectMake(0, offset, self.view.width, KHeaderHeight- totalOffsetY);
-    //    }
-    
-}
 
 #pragma mark ————— 切换账号 —————
 -(void)changeUser{

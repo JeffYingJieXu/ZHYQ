@@ -23,7 +23,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        
+        self.contentView.backgroundColor = KWhiteColor;
+        self.backgroundColor = KWhiteColor;
     }
     return self;
 }
@@ -31,8 +32,8 @@
 -(void)setCellData:(NSDictionary *)cellData{
     _cellData = cellData;
     if (cellData) {
-        if (cellData[@"title_icon"]) {
-            [self.titleIcon setImage:ImageWithFile(cellData[@"title_icon"])];
+        if (cellData[@"icon"]) {
+            [self.titleIcon setImage:ImageWithFile(cellData[@"icon"])];
             [_titleIcon mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.mas_equalTo(KNormalSpace);
                 make.centerY.mas_equalTo(self);
@@ -45,41 +46,26 @@
             }];
         }
         
-        if (cellData[@"titleText"]) {
-            self.titleLbl.text = cellData[@"titleText"];
+        if (cellData[@"title"]) {
+            self.titleLbl.text = cellData[@"title"];
         }
-        
-        if (cellData[@"detailText"]) {
-            self.detaileLbl.text = cellData[@"detailText"];
-            [_detaileLbl mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(_titleLbl.mas_right).offset(10);
-                make.centerY.mas_equalTo(self);
-                make.right.mas_equalTo(self.arrowIcon.mas_left).offset(- 10);
-            }];
-        }else{
-            [_detaileLbl mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(_titleLbl.mas_right).offset(0);
-                make.centerY.mas_equalTo(self);
-                make.right.mas_equalTo(self.arrowIcon.mas_left).offset(0);
-            }];
-        }
-        if (cellData[@"arrow_icon"]) {
-            [self.arrowIcon setImage:ImageWithFile(cellData[@"arrow_icon"])];
-            [_arrowIcon mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.right.mas_equalTo(-KNormalSpace);
-                make.top.mas_equalTo(KNormalSpace);
-                make.width.height.mas_equalTo(22);
-                make.centerY.mas_equalTo(self);
-            }];
-            
-        }else{
-            [_arrowIcon mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.right.mas_equalTo(0);
-                make.top.mas_equalTo(KNormalSpace);
-                make.width.height.mas_equalTo(0);
-                make.centerY.mas_equalTo(self);
-            }];
-        }
+//        if (cellData[@"arrow_icon"]) {
+//            [self.arrowIcon setImage:ImageWithFile(cellData[@"arrow_icon"])];
+//            [_arrowIcon mas_updateConstraints:^(MASConstraintMaker *make) {
+//                make.right.mas_equalTo(-KNormalSpace);
+//                make.top.mas_equalTo(KNormalSpace);
+//                make.width.height.mas_equalTo(22);
+//                make.centerY.mas_equalTo(self);
+//            }];
+//            
+//        }else{
+//            [_arrowIcon mas_updateConstraints:^(MASConstraintMaker *make) {
+//                make.right.mas_equalTo(0);
+//                make.top.mas_equalTo(KNormalSpace);
+//                make.width.height.mas_equalTo(0);
+//                make.centerY.mas_equalTo(self);
+//            }];
+//        }
     }
 }
 
@@ -114,7 +100,7 @@
         _detaileLbl = [UILabel new];
         _detaileLbl.font = SYSTEMFONT(12);
         _detaileLbl.textColor = KGrayColor;
-        _detaileLbl.textAlignment = UITextAlignmentRight;
+        _detaileLbl.textAlignment = NSTextAlignmentRight;
         [self addSubview:_detaileLbl];
         
         [_detaileLbl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -139,5 +125,27 @@
         }];
     }
     return _arrowIcon;
+}
+- (UILabel *)msgNums
+{
+    if (!_msgNums) {
+        _msgNums = [UILabel new];
+        _msgNums.font = SYSTEMFONT(12);
+        _msgNums.textColor = KWhiteColor;
+        _msgNums.textAlignment = NSTextAlignmentCenter;
+        _msgNums.hidden = YES;
+        ViewRadius(_msgNums, 13);
+        _msgNums.backgroundColor = KRedColor;
+    
+        [self addSubview:_msgNums];
+        [_msgNums mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(-KNormalSpace-28);
+            make.top.mas_equalTo(KNormalSpace);
+//            make.width.mas_greaterThanOrEqualTo(18);
+            make.width.height.mas_equalTo(26);
+            make.centerY.mas_equalTo(self);
+        }];
+    }
+    return _msgNums;
 }
 @end

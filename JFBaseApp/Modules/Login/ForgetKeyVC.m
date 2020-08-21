@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *invitelab;
 @property (weak, nonatomic) IBOutlet UIButton *inviteBtn;
 
+
 @end
 
 @implementation ForgetKeyVC
@@ -71,7 +72,7 @@
                           @"code":self.yanzlab.text
     };
     [QMUITips showLoadingInView:self.view];
-    [JFNetTool post:JFChangePassword paramJson:NO params:dic Suc:^(NSDictionary *data, NSInteger code, NSString *msg) {
+    [JFNetTool post:@"" paramJson:NO params:dic Suc:^(NSDictionary *data, NSInteger code, NSString *msg) {
         [QMUITips showWithText:@"密码修改成功"];
         [userManager login:kUserLoginTypePwd params:@{@"param":self.phoneboard.text,@"password":self.keyboard.text,@"type":@"phone",@"pushId":@"pushStr"
         } completion:^(BOOL success, NSString *des) {
@@ -101,9 +102,8 @@
         [QMUITips showWithText:@"请输入手机号"];
         return;
     }else{
-        NSString *urlStr =[NSString stringWithFormat:@"%@/%@",curUrl,JFGetIdentifyingCodeURL];
- 
-        [PPNetworkHelper GET:urlStr parameters:@{@"phone":self.phoneboard.text,@"type":@2} success:^(id responseObject) {
+   
+        [PPNetworkHelper GET:@"" parameters:@{@"phone":self.phoneboard.text,@"type":@2} success:^(id responseObject) {
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSInteger code = [responseObject[@"code"] integerValue];
                 if (code==0) {

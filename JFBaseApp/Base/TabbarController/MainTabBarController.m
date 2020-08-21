@@ -8,7 +8,7 @@
 
 #import "MainTabBarController.h"
 #import "RootNavigationController.h"
-
+#import "WorkViewController.h"
 #import "MineViewController.h"
 #import "UITabBar+CustomBadge.h"
 #import "XYTabBar.h"
@@ -82,13 +82,13 @@
     UIViewController *Map = UIViewController.new;
     [self setupChildViewController:Map title:@"地图" imageName:@"ditu1" seleceImageName:@"ditu"];
     
-    UIViewController *Work = UIViewController.new;
+    WorkViewController *Work = WorkViewController.new;
     [self setupChildViewController:Work title:@"工作台" imageName:@"work1" seleceImageName:@"work2"];
     
     UIViewController *Phone = UIViewController.new;
     [self setupChildViewController:Phone title:@"通讯录" imageName:@"tongxun1" seleceImageName:@"tongxun2"];
     
-    UIViewController *Mine = UIViewController.new;
+    MineViewController *Mine = MineViewController.new;
     [self setupChildViewController:Mine title:@"我的" imageName:@"wo1" seleceImageName:@"wo2"];
     
     self.viewControllers = _VCS;

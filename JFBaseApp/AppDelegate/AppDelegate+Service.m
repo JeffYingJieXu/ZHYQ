@@ -9,7 +9,7 @@
 #import "AppDelegate+Service.h"
 
 #import <UMSocialCore/UMSocialCore.h>
-#import "LoginViewController.h"
+#import "LoginVC.h"
 #import "OpenUDID.h"
 @implementation AppDelegate (Service)
 
@@ -94,7 +94,7 @@
     }else {//登陆失败加载登陆页面控制器
         
         self.mainTabBar = nil;
-        RootNavigationController *loginNavi =[[RootNavigationController alloc] initWithRootViewController:[LoginViewController new]];
+        RootNavigationController *loginNavi =[[RootNavigationController alloc] initWithRootViewController:[LoginVC new]];
         
         CATransition *anima = [CATransition animation];
         anima.type = @"fade";//设置动画的类型

@@ -9,7 +9,6 @@
 #import "AppManager.h"
 #import "AdPageView.h"
 #import "RootWebViewController.h"
-#import "LoginViewController.h"
 #import "YYFPSLabel.h"
 
 @implementation AppManager

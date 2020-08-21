@@ -24,7 +24,7 @@
                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xzg-fB-7Ia">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                 </imageView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="GTA-cI-UHn">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login_backimg.png" translatesAutoresizingMaskIntoConstraints="NO" id="GTA-cI-UHn">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="GTA-cI-UHn" secondAttribute="height" id="ORO-gY-ZtS"/>
@@ -225,6 +225,12 @@
                         <constraint firstItem="aZc-d2-Eha" firstAttribute="top" secondItem="jGm-4h-Hnz" secondAttribute="bottom" id="pg5-n5-2DW"/>
                         <constraint firstItem="phA-M1-970" firstAttribute="top" secondItem="jry-li-Oao" secondAttribute="bottom" id="qu4-uR-gDR"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fvq-MH-UCN">
                     <rect key="frame" x="206.5" y="616" width="130" height="30"/>
@@ -238,6 +244,17 @@
                     </state>
                     <connections>
                         <action selector="setmima:" destination="-1" eventType="touchUpInside" id="OjZ-1G-vtX"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qac-fv-3cy">
+                    <rect key="frame" x="10" y="44" width="35" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="DWw-WE-Cuk"/>
+                        <constraint firstAttribute="height" constant="35" id="OZg-xU-Ir5"/>
+                    </constraints>
+                    <state key="normal" image="white_close.png"/>
+                    <connections>
+                        <action selector="dismissPage:" destination="-1" eventType="touchUpInside" id="I6e-a3-5nC"/>
                     </connections>
                 </button>
             </subviews>
@@ -258,12 +275,14 @@
                 <constraint firstItem="7Vn-1v-cU4" firstAttribute="centerX" secondItem="Xzg-fB-7Ia" secondAttribute="centerX" id="VEY-Us-nvj"/>
                 <constraint firstItem="Xzg-fB-7Ia" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="VmM-Lo-sc1"/>
                 <constraint firstItem="ibm-qX-LWC" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="WGg-Xx-OWl"/>
+                <constraint firstItem="qac-fv-3cy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="44" id="XW7-LB-kVQ"/>
                 <constraint firstItem="6Si-fE-vRe" firstAttribute="leading" secondItem="CTn-Tv-uGD" secondAttribute="trailing" id="a6m-b4-sXG"/>
                 <constraint firstItem="7Vn-1v-cU4" firstAttribute="centerY" secondItem="fYN-sX-fTI" secondAttribute="centerY" id="hoG-oo-taA"/>
                 <constraint firstItem="GTA-cI-UHn" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="k1r-Ju-7HL"/>
                 <constraint firstItem="cvf-e7-Opq" firstAttribute="bottom" secondItem="Xzg-fB-7Ia" secondAttribute="bottom" constant="-58" id="k48-hE-o2t"/>
                 <constraint firstItem="7Vn-1v-cU4" firstAttribute="centerY" secondItem="fYN-sX-fTI" secondAttribute="centerY" id="k7R-TN-UEs"/>
                 <constraint firstItem="Xzg-fB-7Ia" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kGn-38-ElV"/>
+                <constraint firstItem="qac-fv-3cy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="mXH-du-3Jx"/>
                 <constraint firstAttribute="trailing" secondItem="Xzg-fB-7Ia" secondAttribute="trailing" id="ov0-u2-GJA"/>
                 <constraint firstItem="Fvq-MH-UCN" firstAttribute="centerY" secondItem="7Vn-1v-cU4" secondAttribute="centerY" id="qqg-oj-j5E"/>
                 <constraint firstItem="6Si-fE-vRe" firstAttribute="trailing" secondItem="Tpn-Jk-mQ8" secondAttribute="leading" id="rwF-nz-v1S"/>
@@ -278,8 +297,10 @@
         <image name="check_noable.png" width="24" height="24"/>
         <image name="check_selected.png" width="48" height="48"/>
         <image name="login_account.png" width="32" height="32"/>
+        <image name="login_backimg.png" width="750" height="750"/>
         <image name="login_bg.png" width="360" height="640"/>
         <image name="login_eye.png" width="48" height="48"/>
         <image name="login_lock.png" width="32" height="32"/>
+        <image name="white_close.png" width="16" height="16"/>
     </resources>
 </document>
