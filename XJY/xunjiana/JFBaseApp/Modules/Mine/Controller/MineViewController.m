@@ -11,6 +11,7 @@
 #import "SettingViewController.h"
 #import "MineHeadV.h"
 
+#import "AppDelegate+Service.h"
 @interface MineViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     NSArray *_dataSource;
@@ -57,18 +58,40 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
         
-        LoginVC *vc = LoginVC.new;
-        vc.modalPresentationStyle = 0;
-        [self presentViewController:vc animated:YES completion:nil];
+        LoginVC *vc = [LoginVC new];
+        AppDelegate *delegate = [AppDelegate shareAppDelegate];
+        delegate.window.rootViewController = vc;
     }];
     [headv addGestureRecognizer:tap];
     
-    _dataSource = @[@[@{@"icon":@"mymsg",@"title":@"消息中心",@"right":@"arrow_icon"}],@[@{@"icon":@"myfeedback",@"title":@"用户留言",@"right":@"arrow_icon"},
-          @{@"icon":@"myabout",@"title":@"关于我们",@"right":@"arrow_icon"}],@[@{@"icon":@"myset",@"title":@"退出登录",@"right":@"arrow_icon"}]
-    ];
+//    _dataSource = @[@[@{@"icon":@"mymsg",@"title":@"消息中心",@"right":@"arrow_icon"}],@[@{@"icon":@"myfeedback",@"title":@"用户留言",@"right":@"arrow_icon"},
+//          @{@"icon":@"myabout",@"title":@"关于我们",@"right":@"arrow_icon"}],@[@{@"icon":@"myset",@"title":@"退出登录",@"right":@"arrow_icon"}]
+//    ];
+    
+    _dataSource = @[];
     [self.tableView reloadData];
+    
+    QMUIButton *button = [QMUIButton new];
+    button.adjustsButtonWhenHighlighted = YES;
+    button.titleLabel.font = UIFontBoldMake(22);
+    [button setTitleColor:UIColorWhite forState:UIControlStateNormal];
+    button.backgroundColor = CThemeColor;
+    button.layer.cornerRadius = 6;
+    [self.view addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.view).offset(-30-kTabBarHeight);
+        make.centerX.mas_equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake(KScreenWidth*0.65, 50));
+    }];
+    [button setTitle:@"退出" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(loginOut) forControlEvents:UIControlEventTouchUpInside];
+    
 }
-
+-(void)loginOut{
+    LoginVC *vc = [LoginVC new];
+    AppDelegate *delegate = [AppDelegate shareAppDelegate];
+    delegate.window.rootViewController = vc;
+}
 #pragma mark ————— tableview 代理 —————
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return _dataSource.count;

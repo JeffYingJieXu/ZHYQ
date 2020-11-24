@@ -20,15 +20,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lanchimg" translatesAutoresizingMaskIntoConstraints="NO" id="977-dA-QMm">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="977-dA-QMm" secondAttribute="trailing" id="dZJ-Yg-gA2"/>
-                            <constraint firstItem="977-dA-QMm" firstAttribute="top" secondItem="2Yy-2a-xFN" secondAttribute="bottom" id="guI-e3-25J"/>
+                            <constraint firstItem="977-dA-QMm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="guI-e3-25J"/>
                             <constraint firstItem="977-dA-QMm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="jqu-4p-eFe"/>
-                            <constraint firstItem="2xP-yP-hMT" firstAttribute="top" secondItem="977-dA-QMm" secondAttribute="bottom" id="oJO-Te-oBa"/>
+                            <constraint firstAttribute="bottom" secondItem="977-dA-QMm" secondAttribute="bottom" id="oJO-Te-oBa"/>
                         </constraints>
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
