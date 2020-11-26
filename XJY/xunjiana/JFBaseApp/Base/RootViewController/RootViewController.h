@@ -19,10 +19,12 @@
  */
 @property (nonatomic, assign) UIStatusBarStyle StatusBarStyle;
 
-
 @property (nonatomic, strong) UITableView * tableView;
 @property (nonatomic, strong) UICollectionView * collectionView;
 
+@property (nonatomic,assign) int page;
+@property (nonatomic,strong) NSMutableArray *dataList;
+@property (nonatomic,strong) UILabel *pageTitleLabel;
 /**
  *  显示没有数据页面
  */
@@ -83,4 +85,9 @@
 //取消网络请求
 - (void)cancelRequest;
 
+-(void)headerRereshing;
+
+-(void)footerRereshing;
+
+-(void)uiNavBackColor:(UIColor *)backcolor leftIcon:(NSString *)imgStr navtitle:(NSString *)title titlecolor:(UIColor *)titlecolor;
 @end

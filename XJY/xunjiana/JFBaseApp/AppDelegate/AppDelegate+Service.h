@@ -21,9 +21,6 @@
 //初始化 window
 -(void)initWindow;
 
-//初始化 UMeng
--(void)initUMeng;
-
 //初始化用户系统
 -(void)initUserManager;
 

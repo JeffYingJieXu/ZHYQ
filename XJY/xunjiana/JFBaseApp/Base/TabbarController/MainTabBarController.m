@@ -8,7 +8,8 @@
 
 #import "MainTabBarController.h"
 #import "RootNavigationController.h"
-#import "WorkViewController.h"
+#import "HomeViewController.h"
+#import "SearchViewController.h"
 #import "MineViewController.h"
 #import "UITabBar+CustomBadge.h"
 #import "XYTabBar.h"
@@ -76,11 +77,11 @@
 //    [self setupChildViewController:homeVC title:@"首页" imageName:@"icon_tabbar_homepage" seleceImageName:@"icon_tabbar_homepage_selected"];
 
     
-    WorkViewController *Work = WorkViewController.new;
-    [self setupChildViewController:Work title:@"巡检任务" imageName:@"homeN" seleceImageName:@"homeH"];
+    HomeViewController *Home = HomeViewController.new;
+    [self setupChildViewController:Home title:@"巡检任务" imageName:@"homeN" seleceImageName:@"homeH"];
     
-    UIViewController *Phone = UIViewController.new;
-    [self setupChildViewController:Phone title:@"统计查询" imageName:@"searchN" seleceImageName:@"searchH"];
+    SearchViewController *Searchvc = SearchViewController.new;
+    [self setupChildViewController:Searchvc title:@"统计查询" imageName:@"searchN" seleceImageName:@"searchH"];
     
     MineViewController *Mine = MineViewController.new;
     [self setupChildViewController:Mine title:@"个人中心" imageName:@"mineN" seleceImageName:@"mineH"];

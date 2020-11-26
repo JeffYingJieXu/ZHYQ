@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="137" id="KGk-i7-Jjw" customClass="HomeCell">
+            <rect key="frame" x="0.0" y="0.0" width="407" height="137"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="407" height="137"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23:30 -- 00:30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32A-AT-6tC">
+                        <rect key="frame" x="15" y="0.0" width="188.5" height="137"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123#炉巡检路线" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="020-xu-dHG">
+                        <rect key="frame" x="203.5" y="46.5" width="188.5" height="44"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="6ra-cq-sEM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="32A-AT-6tC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="0dd-c1-g3y"/>
+                    <constraint firstItem="020-xu-dHG" firstAttribute="width" secondItem="32A-AT-6tC" secondAttribute="width" id="4GR-oj-sng"/>
+                    <constraint firstItem="020-xu-dHG" firstAttribute="leading" secondItem="32A-AT-6tC" secondAttribute="trailing" id="4oT-si-SeH"/>
+                    <constraint firstAttribute="trailing" secondItem="020-xu-dHG" secondAttribute="trailing" constant="15" id="NIX-hM-8zw"/>
+                    <constraint firstItem="020-xu-dHG" firstAttribute="leading" secondItem="32A-AT-6tC" secondAttribute="trailing" id="cwI-eF-974"/>
+                    <constraint firstItem="32A-AT-6tC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="eeR-J4-mGc"/>
+                    <constraint firstItem="020-xu-dHG" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="fYC-m9-i24"/>
+                    <constraint firstAttribute="bottom" secondItem="32A-AT-6tC" secondAttribute="bottom" id="pPH-Hb-9ce"/>
+                    <constraint firstItem="32A-AT-6tC" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="qzr-nF-pef"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="routename" destination="020-xu-dHG" id="nz0-21-CTN"/>
+                <outlet property="timelabel" destination="32A-AT-6tC" id="Mtr-QZ-tF1"/>
+            </connections>
+            <point key="canvasLocation" x="-95" y="54"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -33,7 +33,7 @@
     UIView *navtion = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, kNavBarAndStatusBarHeight)];
     navtion.backgroundColor = CNavBgColor;
     UILabel *label = [[UILabel alloc]init];
-    label.text = @"工作台";
+    label.text = @"巡检任务";
     [label setFont:FontNav];
     label.textColor = CNavBgFontColor;
     label.frame = CGRectMake(0, kStatusBarHeight,KScreenWidth,44);

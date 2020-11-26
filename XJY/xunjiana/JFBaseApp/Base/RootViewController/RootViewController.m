@@ -7,7 +7,6 @@
 //
 
 #import "RootViewController.h"
-#import <UShareUI/UShareUI.h>
 
 
 @interface RootViewController ()
@@ -60,14 +59,18 @@
 
 -(void)showNoDataImage
 {
-    _noDataView=[[UIImageView alloc] init];
-    [_noDataView setImage:[UIImage imageNamed:@"generl_nodata"]];
-    [self.view.subviews enumerateObjectsUsingBlock:^(UITableView* obj, NSUInteger idx, BOOL *stop) {
-        if ([obj isKindOfClass:[UITableView class]]) {
-            [_noDataView setFrame:CGRectMake(0, 0,obj.frame.size.width, obj.frame.size.height)];
-            [obj addSubview:_noDataView];
-        }
-    }];
+    if (!_noDataView) {
+            _noDataView=[[UIImageView alloc] init];
+        [_noDataView setImage:[UIImage imageNamed:@"generl_nodata"]];
+        [self.view.subviews enumerateObjectsUsingBlock:^(UITableView* obj, NSUInteger idx, BOOL *stop) {
+            if ([obj isKindOfClass:[UITableView class]]||[obj isKindOfClass:[UICollectionView class]]) {
+                float www = 128;
+                float hhh = 93;
+                [_noDataView setFrame:CGRectMake(obj.frame.size.width/2.0-www/2.0, obj.frame.size.height/2.0-hhh/2.0,www,hhh )];
+                [obj addSubview:_noDataView];
+            }
+        }];
+    }
 }
 
 -(void)removeNoDataImage{
@@ -131,7 +134,7 @@
         _collectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRereshing)];
 
 //#ifdef kiOS11Before
-//        
+//
 //#else
 //        _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 //        _collectionView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0);
@@ -151,6 +154,21 @@
     
 }
 
+-(int)page
+{
+    if (!_page) {
+        _page = 1;
+    }
+    return _page;
+}
+- (NSMutableArray *)dataList
+{
+    if (!_dataList) {
+        _dataList = [NSMutableArray array];
+    }
+    return _dataList;
+}
+
 /**
  *  是否显示返回按钮
  */
@@ -160,7 +178,7 @@
     NSInteger VCCount = self.navigationController.viewControllers.count;
     //下面判断的意义是 当VC所在的导航控制器中的VC个数大于1 或者 是present出来的VC时，才展示返回按钮，其他情况不展示
     if (isShowLiftBack && ( VCCount > 1 || self.navigationController.presentingViewController != nil)) {
-        [self addNavigationItemWithImageNames:@[@"back_icon"] isLeft:YES target:self action:@selector(backBtnClicked) tags:nil];
+        [self addNavigationItemWithImageNames:@[@"nav_back"] isLeft:YES target:self action:@selector(backBtnClicked) tags:nil];
         
     } else {
         self.navigationItem.hidesBackButton = YES;
@@ -200,13 +218,13 @@
     for (NSString * imageName in imageNames) {
         UIButton * btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        btn.frame = CGRectMake(0, 0, 30, 30);
+        btn.frame = CGRectMake(0, 0, 50, 44);
         [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
         
         if (isLeft) {
-            [btn setContentEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 10)];
+            [btn setContentEdgeInsets:UIEdgeInsetsMake(0, -15, 0, 10)];
         }else{
-            [btn setContentEdgeInsets:UIEdgeInsetsMake(0, 10, 0, -10)];
+            [btn setContentEdgeInsets:UIEdgeInsetsMake(0, 10, 0, -15)];
         }
         
         btn.tag = [tags[i++] integerValue];
@@ -308,5 +326,35 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(void)uiNavBackColor:(UIColor *)backcolor leftIcon:(NSString *)imgStr navtitle:(NSString *)title titlecolor:(UIColor *)titlecolor{
+    
+    UIView *navtion = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, kNavBarAndStatusBarHeight)];
+    navtion.backgroundColor = backcolor;
+    UILabel *label = [[UILabel alloc]init];
+    label.text = title;
+    [label setFont:FontNav];
+    self.pageTitleLabel = label;
+    label.textColor = titlecolor;
+    label.frame = CGRectMake(0, kStatusBarHeight,KScreenWidth,44);
+    // label.center = navtion.center;
+    label.textAlignment = NSTextAlignmentCenter;
+    [navtion addSubview:label];
+    
+    if (imgStr) {
+            UIImageView *returnBtn = [[UIImageView alloc]initWithImage:[UIImage imageNamed:imgStr]];
+        returnBtn.frame = CGRectMake(8,11 + kStatusBarHeight,22,22);
+        [navtion addSubview:returnBtn];
+        
+        UIButton *btnttttt = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnttttt.backgroundColor = [UIColor clearColor];
+        [btnttttt addTarget:self action:@selector(backBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+        btnttttt.frame = CGRectMake(0,0,100,88);
+        [navtion addSubview:btnttttt];
+    }
 
+    [self.view addSubview:navtion];
+//    [[YBToolClass sharedInstance] lineViewWithFrame:CGRectMake(0, navtion.height-1, _window_width, 1) andColor:RGB(244, 245, 246) andView:navtion];
+    
+    
+}
 @end

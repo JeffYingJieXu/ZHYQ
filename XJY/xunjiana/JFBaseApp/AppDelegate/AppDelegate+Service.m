@@ -8,7 +8,6 @@
 
 #import "AppDelegate+Service.h"
 
-#import <UMSocialCore/UMSocialCore.h>
 #import "LoginVC.h"
 #import "OpenUDID.h"
 @implementation AppDelegate (Service)
@@ -135,66 +134,15 @@
 }
 
 
-#pragma mark ————— 友盟 初始化 —————
--(void)initUMeng{
-    /* 打开调试日志 */
-    [[UMSocialManager defaultManager] openLog:YES];
-    
-    /* 设置友盟appkey */
-    [[UMSocialManager defaultManager] setUmSocialAppkey:UMengKey];
-    
-    [self configUSharePlatforms];
-}
+
 #pragma mark ————— 配置第三方 —————
 -(void)configUSharePlatforms{
     /* 设置微信的appKey和appSecret */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:kAppKey_Wechat appSecret:kSecret_Wechat redirectURL:nil];
-    /*
-     * 移除相应平台的分享，如微信收藏
-     */
-    //[[UMSocialManager defaultManager] removePlatformProviderWithPlatformTypes:@[@(UMSocialPlatformType_WechatFavorite)]];
-    
-    /* 设置分享到QQ互联的appID
-     * U-Share SDK为了兼容大部分平台命名，统一用appKey和appSecret进行参数设置，而QQ平台仅需将appID作为U-Share的appKey参数传进即可。
-     */
-    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:kAppKey_Tencent/*设置QQ平台的appID*/  appSecret:nil redirectURL:nil];
+
 }
 
 #pragma mark ————— OpenURL 回调 —————
 // 支持所有iOS系统。注：此方法是老方法，建议同时实现 application:openURL:options: 若APP不支持iOS9以下，可直接废弃当前，直接使用application:openURL:options:
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-    //6.3的新的API调用，是为了兼容国外平台(例如:新版facebookSDK,VK等)的调用[如果用6.2的api调用会没有回调],对国内平台没有影响
-    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];
-    if (!result) {
-        // 其他如支付等SDK的回调
-    }
-    return result;
-}
-
-// NOTE: 9.0以后使用新API接口
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
-{
-    //6.3的新的API调用，是为了兼容国外平台(例如:新版facebookSDK,VK等)的调用[如果用6.2的api调用会没有回调],对国内平台没有影响
-    BOOL result = [[UMSocialManager defaultManager] handleOpenURL:url options:options];
-    if (!result) {
-        // 其他如支付等SDK的回调
-        if ([url.host isEqualToString:@"safepay"]) {
-            //跳转支付宝钱包进行支付，处理支付结果
-            //            [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            //                NSLog(@"result = %@",resultDic);
-            //            }];
-            return YES;
-        }
-        //        if  ([OpenInstallSDK handLinkURL:url]){
-        //            return YES;
-        //        }
-        //        //微信支付
-        //        return [WXApi handleOpenURL:url delegate:[PayManager sharedPayManager]];
-    }
-    return result;
-}
-
 #pragma mark ————— 网络状态监听 —————
 - (void)monitorNetworkStatus
 {
