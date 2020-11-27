@@ -721,7 +721,7 @@ typedef void(^doneBlock)(NSDate *);
         [self layoutIfNeeded];
     } completion:^(BOOL finished) {
 //        [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-//        [self removeFromSuperview];
+        [self removeFromSuperview];
         self.nowIsShow = NO;
     }];
 }

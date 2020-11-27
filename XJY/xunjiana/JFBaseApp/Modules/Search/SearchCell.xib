@@ -294,7 +294,7 @@
                 <outlet property="weixiu" destination="h9A-EQ-hoO" id="rSy-bZ-V5b"/>
                 <outlet property="yichang" destination="Om0-0j-Ekx" id="8Rz-VH-SFA"/>
             </connections>
-            <point key="canvasLocation" x="-362" y="-62"/>
+            <point key="canvasLocation" x="75" y="-49"/>
         </tableViewCell>
     </objects>
 </document>

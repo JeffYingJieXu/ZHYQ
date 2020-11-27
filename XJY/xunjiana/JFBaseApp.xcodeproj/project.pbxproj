@@ -139,6 +139,9 @@
 		46FB3511256F70D9006A5131 /* click_date@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB3510256F70D9006A5131 /* click_date@2x.png */; };
 		46FB3514256F91AB006A5131 /* click_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB3512256F91AB006A5131 /* click_nor@2x.png */; };
 		46FB3515256F91AB006A5131 /* click_sel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46FB3513256F91AB006A5131 /* click_sel@2x.png */; };
+		46FB351825709D36006A5131 /* RecordDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB351725709D36006A5131 /* RecordDetailVC.m */; };
+		46FB351C25709D56006A5131 /* RecordDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46FB351A25709D56006A5131 /* RecordDetailCell.m */; };
+		46FB351D25709D56006A5131 /* RecordDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46FB351B25709D56006A5131 /* RecordDetailCell.xib */; };
 		628A1032819015C0BF1CD54F /* libPods-JFBaseApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C065F16FD01FD741775D52B4 /* libPods-JFBaseApp.a */; };
 /* End PBXBuildFile section */
 
@@ -394,6 +397,11 @@
 		46FB3510256F70D9006A5131 /* click_date@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "click_date@2x.png"; sourceTree = "<group>"; };
 		46FB3512256F91AB006A5131 /* click_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "click_nor@2x.png"; sourceTree = "<group>"; };
 		46FB3513256F91AB006A5131 /* click_sel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "click_sel@2x.png"; sourceTree = "<group>"; };
+		46FB351625709D36006A5131 /* RecordDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordDetailVC.h; sourceTree = "<group>"; };
+		46FB351725709D36006A5131 /* RecordDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecordDetailVC.m; sourceTree = "<group>"; };
+		46FB351925709D56006A5131 /* RecordDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RecordDetailCell.h; sourceTree = "<group>"; };
+		46FB351A25709D56006A5131 /* RecordDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RecordDetailCell.m; sourceTree = "<group>"; };
+		46FB351B25709D56006A5131 /* RecordDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecordDetailCell.xib; sourceTree = "<group>"; };
 		C065F16FD01FD741775D52B4 /* libPods-JFBaseApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-JFBaseApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1069,6 +1077,11 @@
 				46FB34FE256E3563006A5131 /* SearchCell.h */,
 				46FB34FC256E3563006A5131 /* SearchCell.m */,
 				46FB34FD256E3563006A5131 /* SearchCell.xib */,
+				46FB351625709D36006A5131 /* RecordDetailVC.h */,
+				46FB351725709D36006A5131 /* RecordDetailVC.m */,
+				46FB351925709D56006A5131 /* RecordDetailCell.h */,
+				46FB351A25709D56006A5131 /* RecordDetailCell.m */,
+				46FB351B25709D56006A5131 /* RecordDetailCell.xib */,
 				46FB3510256F70D9006A5131 /* click_date@2x.png */,
 				46FB3512256F91AB006A5131 /* click_nor@2x.png */,
 				46FB3513256F91AB006A5131 /* click_sel@2x.png */,
@@ -1079,12 +1092,12 @@
 		46FB3504256F43D0006A5131 /* WSDatePickerView */ = {
 			isa = PBXGroup;
 			children = (
-				46FB3505256F43D0006A5131 /* NSDate+Extension.h */,
 				46FB3506256F43D0006A5131 /* WSDatePickerView.h */,
-				46FB3507256F43D0006A5131 /* UIView+Extension.h */,
-				46FB3508256F43D0006A5131 /* WSDatePickerView.xib */,
 				46FB3509256F43D0006A5131 /* WSDatePickerView.m */,
+				46FB3508256F43D0006A5131 /* WSDatePickerView.xib */,
+				46FB3505256F43D0006A5131 /* NSDate+Extension.h */,
 				46FB350A256F43D0006A5131 /* NSDate+Extension.m */,
+				46FB3507256F43D0006A5131 /* UIView+Extension.h */,
 				46FB350B256F43D0006A5131 /* UIView+Extension.m */,
 			);
 			path = WSDatePickerView;
@@ -1187,6 +1200,7 @@
 				4679EA2124EE25BD006F0383 /* MBHUD_Success@2x.png in Resources */,
 				469A8EC324EE7FE700CF7C77 /* login_lock@2x.png in Resources */,
 				46A164632268223200C37236 /* LaunchScreen.storyboard in Resources */,
+				46FB351D25709D56006A5131 /* RecordDetailCell.xib in Resources */,
 				469A8ECA24EF60EE00CF7C77 /* login_yanz@2x.png in Resources */,
 				46FB350C256F43D0006A5131 /* WSDatePickerView.xib in Resources */,
 				46FB3511256F70D9006A5131 /* click_date@2x.png in Resources */,
@@ -1325,6 +1339,7 @@
 				46A164BF226824F900C37236 /* TAPageControl.m in Sources */,
 				46A164BA226824F900C37236 /* MBProgressHUD+XY.m in Sources */,
 				46A164662268223200C37236 /* main.m in Sources */,
+				46FB351C25709D56006A5131 /* RecordDetailCell.m in Sources */,
 				46A164B1226824F900C37236 /* FFTagsView.m in Sources */,
 				4679EA2F24EE4353006F0383 /* UICollectionView+IndexPath.m in Sources */,
 				469A8E7124EE4B5800CF7C77 /* UIButton+AFNetworking.m in Sources */,
@@ -1342,6 +1357,7 @@
 				46523AAD22CA462E001A6EF0 /* UITabBar+CustomBadge.m in Sources */,
 				46A164B9226824F900C37236 /* SandBoxHelper.m in Sources */,
 				46523AAC22CA462E001A6EF0 /* RootViewController.m in Sources */,
+				46FB351825709D36006A5131 /* RecordDetailVC.m in Sources */,
 				469A8EBA24EE7AA200CF7C77 /* UserInfo.m in Sources */,
 				46A1654C226860E500C37236 /* AppDelegate+NotifiPush.m in Sources */,
 				46A164BE226824F900C37236 /* TADotView.m in Sources */,

@@ -32,7 +32,7 @@
     //是否显示返回按钮
     self.isShowLiftBack = YES;
     //默认导航栏样式：黑字
-    self.StatusBarStyle = UIStatusBarStyleLightContent;
+//    self.StatusBarStyle = UIStatusBarStyleLightContent;
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -178,7 +178,7 @@
     NSInteger VCCount = self.navigationController.viewControllers.count;
     //下面判断的意义是 当VC所在的导航控制器中的VC个数大于1 或者 是present出来的VC时，才展示返回按钮，其他情况不展示
     if (isShowLiftBack && ( VCCount > 1 || self.navigationController.presentingViewController != nil)) {
-        [self addNavigationItemWithImageNames:@[@"nav_back"] isLeft:YES target:self action:@selector(backBtnClicked) tags:nil];
+        [self addNavigationItemWithImageNames:@[@"left_white"] isLeft:YES target:self action:@selector(backBtnClicked) tags:nil];
         
     } else {
         self.navigationItem.hidesBackButton = YES;

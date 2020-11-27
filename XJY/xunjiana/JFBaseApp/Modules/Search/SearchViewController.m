@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchCell.h"
 #import "WSDatePickerView.h"
+#import "RecordDetailVC.h"
 @interface SearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,strong)QMUIButton *calendarBtn;
@@ -170,7 +171,8 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    RecordDetailVC *vc = RecordDetailVC.new;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 /*
 #pragma mark - Navigation
