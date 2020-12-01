@@ -8,7 +8,7 @@
 
 #import "HomeViewController.h"
 #import "HomeCell.h"
-
+#import "XunJianDetailVC.h"
 @interface HomeViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @end
@@ -47,7 +47,8 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    XunJianDetailVC *vc = XunJianDetailVC.new;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*

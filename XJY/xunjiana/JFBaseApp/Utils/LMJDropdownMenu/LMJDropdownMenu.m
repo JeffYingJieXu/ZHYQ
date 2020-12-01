@@ -262,6 +262,7 @@
         UIImageView * icon = [[UIImageView alloc] init];
         icon.tag = 888;
         [cell addSubview:icon];
+        icon.hidden = YES;
         
         UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.frame.size.width, self.optionLineHeight)];
         line.backgroundColor = self.optionLineColor;
@@ -277,6 +278,7 @@
     
     UIImageView * icon = [cell viewWithTag:888];
     if ([self.dataSource respondsToSelector:@selector(dropdownMenu:iconForOptionAtIndex:)]){
+        icon.hidden = NO;
         icon.image = [self.dataSource dropdownMenu:self iconForOptionAtIndex:indexPath.row];
     }
     icon.frame = CGRectMake(self.frame.size.width -self.optionIconSize.width -self.optionIconMarginRight, (cHeight - self.optionIconSize.height)/2, self.optionIconSize.width, self.optionIconSize.height);

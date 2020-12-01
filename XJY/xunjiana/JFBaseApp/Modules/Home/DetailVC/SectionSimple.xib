@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" restorationIdentifier="SectionSimple" id="iN0-l3-epB" customClass="SectionSimple">
+            <rect key="frame" x="0.0" y="0.0" width="483" height="111"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wXp-mp-BEz">
+                    <rect key="frame" x="5" y="43.5" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="24" id="0iR-Px-45s"/>
+                        <constraint firstAttribute="height" constant="24" id="YyZ-fu-W9v"/>
+                    </constraints>
+                    <state key="normal" image="xjc.png"/>
+                    <state key="selected" image="xjs.png"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="废水加药间区域" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eca-3P-U3E">
+                    <rect key="frame" x="34" y="46" width="114.5" height="19.5"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                    <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="eca-3P-U3E" firstAttribute="leading" secondItem="wXp-mp-BEz" secondAttribute="trailing" constant="5" id="0bz-Ie-ik4"/>
+                <constraint firstItem="eca-3P-U3E" firstAttribute="centerY" secondItem="wXp-mp-BEz" secondAttribute="centerY" id="DSs-Gp-CpA"/>
+                <constraint firstItem="wXp-mp-BEz" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="cjG-b8-psz"/>
+                <constraint firstItem="wXp-mp-BEz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="jyb-0T-KEr"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-317" y="-61"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="xjc.png" width="24" height="24"/>
+        <image name="xjs.png" width="24" height="24"/>
+    </resources>
+</document>
