@@ -20,5 +20,21 @@
 
     // Configure the view for the selected state
 }
+- (IBAction)normalClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        self.erorBtn.selected = NO;
+        self.choseBtn.selected = YES;
+    } else {
+        self.choseBtn.selected = NO;
+    }
+}
+- (IBAction)erorClick:(UIButton *)sender {
+    sender.selected = !sender.selected;
+    if (sender.selected) {
+        self.normalBtn.selected = NO;
+        self.choseBtn.selected = NO;
+    }
+}
 
 @end

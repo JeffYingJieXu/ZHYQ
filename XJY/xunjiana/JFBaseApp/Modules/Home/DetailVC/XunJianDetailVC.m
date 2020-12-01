@@ -8,7 +8,10 @@
 
 #import "XunJianDetailVC.h"
 #import "XJModel.h"
+
+#import "SectionSimple.h"
 #import "ItemOneCell.h"
+#import "ItemTwoCell.h"
 @interface XunJianDetailVC ()<UITableViewDelegate,UITableViewDataSource,LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
 
 @end
@@ -29,7 +32,7 @@
     self.tableView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight - kTopHeight-100);
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    self.tableView.separatorColor = CViewBgColor;
+    self.tableView.separatorColor = KWhiteColor;
     [self.view addSubview:self.tableView];
     
 }
@@ -70,9 +73,22 @@
     
 }
 #pragma mark --- table delegte datasource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 50;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    SectionSimple *view = [[[NSBundle mainBundle] loadNibNamed:@"SectionSimple" owner:self options:nil]firstObject];
+    
+    return view;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 //    return self.dataList.count;
-    return 1;
+    return 3;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -80,37 +96,47 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ItemOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemOneCell"];
-    if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemOneCell" owner:self options:nil]firstObject];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.menu.dataSource = self;
-        cell.menu.delegate   = self;
-        cell.menu.layer.borderColor  = CThemeColor.CGColor;
-        cell.menu.layer.borderWidth = 2;
-        cell.menu.layer.cornerRadius = 5;
-        cell.menu.title           = @"运行";
-        cell.menu.titleBgColor    = KWhiteColor;
-        cell.menu.titleFont       = SYSTEMFONT(17);
-        cell.menu.titleColor      = [UIColor darkGrayColor];
-        cell.menu.titleAlignment  = NSTextAlignmentLeft;
-        cell.menu.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
-        cell.menu.rotateIcon      = [UIImage imageNamed:@"arrowdown"];
-        cell.menu.rotateIconSize  = CGSizeMake(8, 8);
-        cell.menu.optionBgColor         = CViewBgColor;
-        cell.menu.optionFont            = [UIFont systemFontOfSize:14];
-        cell.menu.optionTextColor       = [UIColor blackColor];
-        cell.menu.optionTextAlignment   = NSTextAlignmentCenter;
-        cell.menu.optionNumberOfLines   = 1;
-        cell.menu.optionLineColor       = [UIColor whiteColor];
+    if (indexPath.row==0) {
+
+        ItemOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemOneCell"];
+        if (cell == nil) {
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemOneCell" owner:self options:nil]firstObject];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.menu.dataSource = self;
+            cell.menu.delegate   = self;
+            cell.menu.layer.borderColor  = CThemeColor.CGColor;
+            cell.menu.layer.borderWidth = 2;
+            cell.menu.layer.cornerRadius = 5;
+            cell.menu.title           = @"运行";
+            cell.menu.titleBgColor    = KWhiteColor;
+            cell.menu.titleFont       = SYSTEMFONT(17);
+            cell.menu.titleColor      = [UIColor darkGrayColor];
+            cell.menu.titleAlignment  = NSTextAlignmentLeft;
+            cell.menu.titleEdgeInsets = UIEdgeInsetsMake(0, 15, 0, 0);
+            cell.menu.rotateIcon      = [UIImage imageNamed:@"arrowdown"];
+            cell.menu.rotateIconSize  = CGSizeMake(8, 8);
+            cell.menu.optionBgColor         = CViewBgColor;
+            cell.menu.optionFont            = [UIFont systemFontOfSize:14];
+            cell.menu.optionTextColor       = [UIColor blackColor];
+            cell.menu.optionTextAlignment   = NSTextAlignmentCenter;
+            cell.menu.optionNumberOfLines   = 1;
+            cell.menu.optionLineColor       = [UIColor whiteColor];
+        }
+        return cell;
+            
+    }else{
+        ItemTwoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemTwoCell"];
+        if (cell == nil) {
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemTwoCell" owner:self options:nil]firstObject];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        return cell;
     }
-    return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
 }
-
 
 
 

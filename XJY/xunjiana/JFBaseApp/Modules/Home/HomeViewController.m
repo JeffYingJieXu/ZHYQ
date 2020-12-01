@@ -48,6 +48,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     XunJianDetailVC *vc = XunJianDetailVC.new;
+    vc.title = @"123#炉巡检路线";
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -12,6 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ItemTwoCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIButton *choseBtn;
+@property (weak, nonatomic) IBOutlet UILabel *name;
+@property (weak, nonatomic) IBOutlet UIButton *normalBtn;
+@property (weak, nonatomic) IBOutlet UIButton *erorBtn;
+
 @end
 
 NS_ASSUME_NONNULL_END

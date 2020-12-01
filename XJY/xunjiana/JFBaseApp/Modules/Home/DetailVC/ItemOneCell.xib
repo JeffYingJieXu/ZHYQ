@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xuf-wQ-Gh1">
-                        <rect key="frame" x="34" y="61" width="24" height="24"/>
+                        <rect key="frame" x="30" y="61" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="ark-m1-J1K"/>
                             <constraint firstAttribute="width" constant="24" id="puD-LG-f3P"/>
@@ -26,17 +26,17 @@
                         <state key="selected" image="xjd.png"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qr-5P-DbV">
-                        <rect key="frame" x="63" y="61" width="24" height="24"/>
+                        <rect key="frame" x="54" y="63" width="20" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="24" id="44s-w9-DbA"/>
-                            <constraint firstAttribute="height" constant="24" id="7Us-6a-iRa"/>
+                            <constraint firstAttribute="width" constant="20" id="44s-w9-DbA"/>
+                            <constraint firstAttribute="height" constant="20" id="7Us-6a-iRa"/>
                         </constraints>
                         <state key="normal" image="xjc.png"/>
                         <state key="selected" image="xjs.png"/>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="有机硫箱加药系统" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oYO-bv-y1W">
-                        <rect key="frame" x="92" y="63.5" width="235" height="19.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <rect key="frame" x="79" y="64" width="248" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -78,8 +78,8 @@
                     <constraint firstItem="voa-19-W7T" firstAttribute="centerY" secondItem="Cen-Ai-mDu" secondAttribute="centerY" id="XFS-1F-Q6i"/>
                     <constraint firstItem="oYO-bv-y1W" firstAttribute="leading" secondItem="9qr-5P-DbV" secondAttribute="trailing" constant="5" id="dq6-Me-V8N"/>
                     <constraint firstAttribute="trailing" secondItem="g8G-0G-cOo" secondAttribute="trailing" constant="5" id="eAx-vi-lPP"/>
-                    <constraint firstItem="Xuf-wQ-Gh1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="34" id="g1n-Ze-ygR"/>
-                    <constraint firstItem="9qr-5P-DbV" firstAttribute="leading" secondItem="Xuf-wQ-Gh1" secondAttribute="trailing" constant="5" id="gsw-UU-R7f"/>
+                    <constraint firstItem="Xuf-wQ-Gh1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="g1n-Ze-ygR"/>
+                    <constraint firstItem="9qr-5P-DbV" firstAttribute="leading" secondItem="Xuf-wQ-Gh1" secondAttribute="trailing" id="gsw-UU-R7f"/>
                     <constraint firstItem="9qr-5P-DbV" firstAttribute="centerY" secondItem="Xuf-wQ-Gh1" secondAttribute="centerY" id="hqp-5M-Csw"/>
                     <constraint firstItem="voa-19-W7T" firstAttribute="leading" secondItem="Cen-Ai-mDu" secondAttribute="trailing" constant="-20" id="nyR-jq-XGa"/>
                     <constraint firstItem="g8G-0G-cOo" firstAttribute="centerY" secondItem="9qr-5P-DbV" secondAttribute="centerY" id="o8x-6u-VW2"/>

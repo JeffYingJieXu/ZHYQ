@@ -14,16 +14,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wXp-mp-BEz">
-                    <rect key="frame" x="5" y="43.5" width="24" height="24"/>
+                    <rect key="frame" x="5" y="45.5" width="20" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="24" id="0iR-Px-45s"/>
-                        <constraint firstAttribute="height" constant="24" id="YyZ-fu-W9v"/>
+                        <constraint firstAttribute="width" constant="20" id="0iR-Px-45s"/>
+                        <constraint firstAttribute="height" constant="20" id="YyZ-fu-W9v"/>
                     </constraints>
                     <state key="normal" image="xjc.png"/>
                     <state key="selected" image="xjs.png"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="废水加药间区域" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eca-3P-U3E">
-                    <rect key="frame" x="34" y="46" width="114.5" height="19.5"/>
+                    <rect key="frame" x="30" y="46" width="448" height="19.5"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                     <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
@@ -34,10 +34,15 @@
                 <constraint firstItem="eca-3P-U3E" firstAttribute="leading" secondItem="wXp-mp-BEz" secondAttribute="trailing" constant="5" id="0bz-Ie-ik4"/>
                 <constraint firstItem="eca-3P-U3E" firstAttribute="centerY" secondItem="wXp-mp-BEz" secondAttribute="centerY" id="DSs-Gp-CpA"/>
                 <constraint firstItem="wXp-mp-BEz" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="cjG-b8-psz"/>
+                <constraint firstAttribute="trailing" secondItem="eca-3P-U3E" secondAttribute="trailing" constant="5" id="jEY-Aw-gY5"/>
                 <constraint firstItem="wXp-mp-BEz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="jyb-0T-KEr"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-317" y="-61"/>
+            <connections>
+                <outlet property="DoneBtn" destination="wXp-mp-BEz" id="JIG-cN-jZQ"/>
+                <outlet property="SectionTitle" destination="eca-3P-U3E" id="ROY-3b-O4f"/>
+            </connections>
+            <point key="canvasLocation" x="-480" y="-91"/>
         </view>
     </objects>
     <resources>
