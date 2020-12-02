@@ -13,7 +13,7 @@
 #import "ItemOneCell.h"
 #import "ItemTwoCell.h"
 @interface XunJianDetailVC ()<UITableViewDelegate,UITableViewDataSource,LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
-
+@property (nonatomic,strong) XJModel *tmpModel;
 @end
 
 @implementation XunJianDetailVC
@@ -24,8 +24,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     menuOptionTitles = @[@"运行",@"备用",@"检修"];
+    self.tmpModel = XJModel.new;
     [self createUI];
-//    [self loadDate];
+    [self loadDate];
 }
 
 -(void)createUI{
@@ -69,8 +70,9 @@
       
     };
     XJModel *m = [XJModel modelWithDictionary:dic];
-    NSLog(@"%@",m.equipments[0].points[1].item.standard);
-    
+//    NSLog(@"%@",m.equipments[0].points[1].item.standard);
+    self.tmpModel = m;
+    [self.tableView reloadData];
 }
 #pragma mark --- table delegte datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -82,13 +84,23 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     SectionSimple *view = [[[NSBundle mainBundle] loadNibNamed:@"SectionSimple" owner:self options:nil]firstObject];
-    
+    view.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithActionBlock:^(id  _Nonnull sender) {
+        self->_tmpModel.show = !self->_tmpModel.show;
+        [self.tableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
+    }];
+    [view addGestureRecognizer:tap];
     return view;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 //    return self.dataList.count;
-    return 3;
+    if (!_tmpModel.show) {
+        return 0;
+    }else{
+        
+        return _tmpModel.equipments[0].show ? 3 : 1;
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -122,6 +134,19 @@
             cell.menu.optionNumberOfLines   = 1;
             cell.menu.optionLineColor       = [UIColor whiteColor];
         }
+        //是否展示子cell
+        cell.arrowBtn.selected = self.tmpModel.equipments[0].show;
+        //按钮正常 是否勾选
+        cell.choseBtn.selected = self.tmpModel.equipments[0].normal;
+        cell.normalBtn.selected = self.tmpModel.equipments[0].normal;
+        
+        [cell.normalBtn addTapBlock:^(UIButton *btn) {
+            btn.selected = !btn.selected;
+            self.tmpModel.equipments[0].normal = btn.selected;
+            //按钮正常 是否勾选
+            cell.choseBtn.selected = btn.selected;
+            cell.normalBtn.selected = btn.selected;
+        }];
         return cell;
             
     }else{
@@ -130,12 +155,27 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemTwoCell" owner:self options:nil]firstObject];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
+        if (self.tmpModel.equipments[0].points[indexPath.row-1].normal) {
+            cell.choseBtn.selected = YES;
+            cell.normalBtn.selected = YES;
+            cell.erorBtn.selected = NO;
+        }else{
+            cell.choseBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].normalChose || self.tmpModel.equipments[0].points[indexPath.row-1].errorChose;
+            cell.normalBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].normalChose;
+            cell.erorBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].errorChose;
+        }
+        [cell.normalBtn addTapBlock:^(UIButton *btn) {
+            
+        }];
+        
+        
         return cell;
     }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    _tmpModel.equipments[0].show = !_tmpModel.equipments[0].show;
+    [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 

@@ -66,9 +66,6 @@
                         </constraints>
                         <state key="normal" image="xjk.png"/>
                         <state key="selected" image="xjg.png"/>
-                        <connections>
-                            <action selector="normalClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="6k2-Po-sQ1"/>
-                        </connections>
                     </button>
                 </subviews>
                 <constraints>

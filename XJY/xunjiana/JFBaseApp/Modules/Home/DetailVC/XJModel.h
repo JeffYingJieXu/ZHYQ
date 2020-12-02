@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *name;
 @property (nonatomic,assign) BOOL show;
 @property (nonatomic,assign) BOOL normal;
-@property (nonatomic,assign) int type;
+@property (nonatomic,assign) NSString *type;
 @property (nonatomic,strong) NSArray <PointModel *> *points;
 @end
 
@@ -35,11 +35,18 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) NSString *unit;
 @end
  
+
 @interface PointModel : NSObject
 @property (nonatomic,assign)  int ID;
 @property (nonatomic,copy) NSString *name;
-@property (nonatomic,copy) NSString *type;
+
+/// 正常 or 异常
+@property (nonatomic,assign) BOOL normalChose;
+@property (nonatomic,assign) BOOL errorChose;
 @property (nonatomic,strong) ItemModel *item;
+
+/// itemOne的正常全部勾选
+@property (nonatomic,assign) BOOL normal;
 @end
  
  

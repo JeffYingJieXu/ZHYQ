@@ -27,13 +27,5 @@
 }
 
 
-- (IBAction)normalClick:(UIButton *)sender {
-    sender.selected = !sender.selected;
-    
-    self.choseBtn.selected = sender.selected;
-
-}
-
-
 
 @end

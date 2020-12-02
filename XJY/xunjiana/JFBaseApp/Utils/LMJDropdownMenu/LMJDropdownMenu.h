@@ -59,7 +59,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign) CGFloat           optionIconMarginRight; // default: 15
 @property (nonatomic,strong) UIColor         * optionLineColor;
 @property (nonatomic,assign) CGFloat           optionLineHeight; // default: 0.5
-
 /*
  选项列表的最大高度。超出最大高度后，选项可滚动 （optionsListLimitHeight <= 0 时，下拉列表将显示所有选项）
  The maximum height of the drop-down list, beyond which the options can be scrolled （When optionsListLimitHeight <= 0, the drop-down list shows all options）
