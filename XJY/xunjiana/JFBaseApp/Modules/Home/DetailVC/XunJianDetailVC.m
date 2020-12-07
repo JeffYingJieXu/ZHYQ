@@ -12,6 +12,8 @@
 #import "SectionSimple.h"
 #import "ItemOneCell.h"
 #import "ItemTwoCell.h"
+
+#import "PiontDetailVC.h"
 @interface XunJianDetailVC ()<UITableViewDelegate,UITableViewDataSource,LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
 @property (nonatomic,strong) XJModel *tmpModel;
 @end
@@ -144,8 +146,9 @@
             btn.selected = !btn.selected;
             self.tmpModel.equipments[0].normal = btn.selected;
             //按钮正常 是否勾选
-            cell.choseBtn.selected = btn.selected;
-            cell.normalBtn.selected = btn.selected;
+//            cell.choseBtn.selected = btn.selected;
+//            cell.normalBtn.selected = btn.selected;
+            [self.tableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
         return cell;
             
@@ -155,7 +158,8 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemTwoCell" owner:self options:nil]firstObject];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        if (self.tmpModel.equipments[0].points[indexPath.row-1].normal) {
+        PointModel *point = self.tmpModel.equipments[0].points[indexPath.row-1];
+        if (point.normal || self.tmpModel.equipments[0].normal) {
             cell.choseBtn.selected = YES;
             cell.normalBtn.selected = YES;
             cell.erorBtn.selected = NO;
@@ -165,17 +169,37 @@
             cell.erorBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].errorChose;
         }
         [cell.normalBtn addTapBlock:^(UIButton *btn) {
+            cell.choseBtn.selected = YES;
             
+            cell.erorBtn.selected = btn.selected;
+            point.errorChose = btn.selected;
+            
+            btn.selected = !btn.selected;
+            point.normalChose = btn.selected;
         }];
-        
+        [cell.erorBtn addTapBlock:^(UIButton *btn) {
+            cell.choseBtn.selected = YES;
+            
+            cell.normalBtn.selected = btn.selected;
+            point.normalChose = btn.selected;
+            
+            btn.selected = !btn.selected;
+            point.errorChose = btn.selected;
+        }];
         
         return cell;
     }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    _tmpModel.equipments[0].show = !_tmpModel.equipments[0].show;
-    [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
+    if (indexPath.row==0) {
+        _tmpModel.equipments[0].show = !_tmpModel.equipments[0].show;
+        [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
+    }else{
+        PiontDetailVC *vc = PiontDetailVC.new;
+        vc.title = @"测项详情";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 

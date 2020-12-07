@@ -48,6 +48,7 @@
 		46838B89256CE7B000284B5B /* mineN@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46838B83256CE7B000284B5B /* mineN@2x.png */; };
 		46838B8A256CE7B000284B5B /* mineH@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46838B84256CE7B000284B5B /* mineH@2x.png */; };
 		46838B8B256CE7B000284B5B /* searchN@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46838B85256CE7B000284B5B /* searchN@2x.png */; };
+		4689F6E4257DC52900D766CA /* PiontDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4689F6E3257DC52900D766CA /* PiontDetailVC.m */; };
 		469A8E6B24EE4B5800CF7C77 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 469A8E4724EE4B5800CF7C77 /* LICENSE */; };
 		469A8E6C24EE4B5800CF7C77 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 469A8E4824EE4B5800CF7C77 /* README.md */; };
 		469A8E6D24EE4B5800CF7C77 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 469A8E4A24EE4B5800CF7C77 /* UIProgressView+AFNetworking.m */; };
@@ -253,6 +254,8 @@
 		46838B83256CE7B000284B5B /* mineN@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mineN@2x.png"; sourceTree = "<group>"; };
 		46838B84256CE7B000284B5B /* mineH@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mineH@2x.png"; sourceTree = "<group>"; };
 		46838B85256CE7B000284B5B /* searchN@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchN@2x.png"; sourceTree = "<group>"; };
+		4689F6E2257DC52900D766CA /* PiontDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PiontDetailVC.h; sourceTree = "<group>"; };
+		4689F6E3257DC52900D766CA /* PiontDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PiontDetailVC.m; sourceTree = "<group>"; };
 		469A8E4724EE4B5800CF7C77 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		469A8E4824EE4B5800CF7C77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		469A8E4A24EE4B5800CF7C77 /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
@@ -1169,6 +1172,8 @@
 				46A8E04625762DCA00A276CB /* SectionSimple.h */,
 				46A8E04725762DCA00A276CB /* SectionSimple.m */,
 				46A8E04925762DDD00A276CB /* SectionSimple.xib */,
+				4689F6E2257DC52900D766CA /* PiontDetailVC.h */,
+				4689F6E3257DC52900D766CA /* PiontDetailVC.m */,
 				46A8E0252576111E00A276CB /* pics */,
 			);
 			path = DetailVC;
@@ -1413,6 +1418,7 @@
 				46FB3503256E45A3006A5131 /* SearchViewController.m in Sources */,
 				469A8E7224EE4B5800CF7C77 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				46A164BB226824F900C37236 /* SDCycleScrollView.m in Sources */,
+				4689F6E4257DC52900D766CA /* PiontDetailVC.m in Sources */,
 				46523AEA22CA4A06001A6EF0 /* MineTableViewCell.m in Sources */,
 				469A8EB024EE79B500CF7C77 /* JFNetTool.m in Sources */,
 				4679EA3124EE4353006F0383 /* UIButton+XYButton.m in Sources */,

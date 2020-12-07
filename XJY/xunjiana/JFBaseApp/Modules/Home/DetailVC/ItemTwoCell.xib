@@ -49,9 +49,6 @@
                         </constraints>
                         <state key="normal" image="xjk.png"/>
                         <state key="selected" image="xjg.png"/>
-                        <connections>
-                            <action selector="normalClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="d8l-Uh-aQv"/>
-                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="异常" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5g-ct-c3k">
                         <rect key="frame" x="513" y="72" width="40" height="25"/>
@@ -71,9 +68,6 @@
                         </constraints>
                         <state key="normal" image="xjk.png"/>
                         <state key="selected" image="xjgr.png"/>
-                        <connections>
-                            <action selector="erorClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="pZS-cy-N39"/>
-                        </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eKi-Ha-b1F">
                         <rect key="frame" x="63" y="62.5" width="2" height="26"/>
