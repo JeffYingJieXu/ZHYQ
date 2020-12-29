@@ -74,6 +74,7 @@
 
 //最新token
 #define LatestToken [[NSUserDefaults standardUserDefaults] objectForKey:@"latestToken"]
+#define SaveToken(obj) [[NSUserDefaults standardUserDefaults] setObject:obj forKey:@"latestToken"]
 // 当前系统版本
 #define CurrentSystemVersion [[UIDevice currentDevice].systemVersion doubleValue]
 // 当前语言

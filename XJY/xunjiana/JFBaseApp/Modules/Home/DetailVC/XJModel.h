@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *name;
 @property (nonatomic,assign) BOOL show;
 @property (nonatomic,strong) NSArray <EqModel *> *equipments;
+@property (nonatomic,strong) NSMutableArray *totalArr;
 @end
 
 @interface EqModel : NSObject

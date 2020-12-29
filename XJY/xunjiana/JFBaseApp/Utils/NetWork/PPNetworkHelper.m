@@ -8,7 +8,6 @@
 
 
 #import "PPNetworkHelper.h"
-#import "AFNetworking.h"
 #import "AFNetworkActivityIndicatorManager.h"
 #import "AESCipher.h"
 #import "HeaderModel.h"

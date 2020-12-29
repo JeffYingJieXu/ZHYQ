@@ -28,7 +28,7 @@
 #if DevelopSever
 
 /**开发服务器*/
-#define URL_main @"http://192.168.20.31:20000/shark-miai-service"
+#define URL_main @"http://120.195.38.107:38080"
 //#define URL_main @"http://192.168.11.122:8090" //展鹏
 
 #elif TestSever
@@ -39,7 +39,7 @@
 #elif ProductSever
 
 /**生产服务器*/
-#define URL_main @"http://192.168.20.31:20000/shark-miai-service"
+#define URL_main @"http://119.3.153.71:30081"
 #endif
 
 
@@ -62,6 +62,13 @@
 #define URL_user_info_change_photo @"/api/user/info/changephoto"
 //注释
 #define URL_user_info_change @"/api/user/info/change"
+
+
+//人员列表
+#define Login_people [NSString stringWithFormat:@"%@/%@",URL_main,@"inspectors"]
+
+//登录
+#define Login_in [NSString stringWithFormat:@"%@/%@",URL_main,@"inspectors/login"]
 
 
 #endif /* URLMacros_h */

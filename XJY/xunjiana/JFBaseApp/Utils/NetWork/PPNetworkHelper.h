@@ -34,7 +34,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "PPNetworkCache.h"
-
+#import "AFNetworking.h"
 #ifndef kIsNetwork
 #define kIsNetwork     [PPNetworkHelper isNetwork]  // 一次性判断是否有网的宏
 #endif

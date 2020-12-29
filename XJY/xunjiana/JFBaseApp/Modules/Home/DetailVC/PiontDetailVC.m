@@ -68,9 +68,29 @@
     lab3.text = @"备注：";
     [self.view addSubview:lab3];
     
-    UITextView *textv = [[UITextView alloc] initWithFrame:CGRectMake(20, 130, KScreenWidth-40, 100)];
+    UITextView *textv = [[UITextView alloc] initWithFrame:CGRectMake(20, 130, KScreenWidth-40, 200)];
+    textv.font = SYSTEMFONT(14);
     [self.view addSubview:textv];
     self.txtView = textv;
+    
+    QMUIButton *button = [QMUIButton new];
+    button.adjustsButtonWhenHighlighted = YES;
+    button.titleLabel.font = UIFontBoldMake(22);
+    [button setTitleColor:UIColorWhite forState:UIControlStateNormal];
+    button.backgroundColor = CThemeColor;
+    button.layer.cornerRadius = 6;
+    [self.view addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.view).offset(-80);
+        make.centerX.mas_equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake(KScreenWidth*0.65, 50));
+    }];
+    [button setTitle:@"保存" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(saveClick) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+- (void)saveClick {
+    
 }
 - (void)pressSwitch:(UISwitch *)sw {
     

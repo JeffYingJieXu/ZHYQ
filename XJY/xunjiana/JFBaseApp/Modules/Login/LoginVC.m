@@ -13,6 +13,7 @@
 #import "AppDelegate+Service.h"
 @interface LoginVC () <LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
 @property (nonatomic,strong)QMUITextField * keyfield;
+@property (nonatomic,strong)NSString *loginID;
 @end
 
 @implementation LoginVC
@@ -25,8 +26,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = CViewBgColor;
     
-    _menu1OptionTitles = @[@"猴子",@"白羊",@"田园猫",@"薄荷猫",@"蓝猫",@"鼠来宝",@"仓鼠王",@"蓝莓",@"西瓜",@"薄荷",@"猴子",@"白羊",@"田园猫",@"薄荷猫",@"蓝猫",@"鼠来宝",@"仓鼠王",@"蓝莓",@"西瓜",@"薄荷"];
+    _menu1OptionTitles = @[];
     [self buildUI];
+    [self loadData];
 }
 - (void)buildUI {
 
@@ -85,6 +87,7 @@
         f.textInsets = UIEdgeInsetsMake(0, 10, 0, 10);
         f.clearButtonMode = UITextFieldViewModeAlways;
         f.backgroundColor = KWhiteColor;
+        f.secureTextEntry =  YES;
         f;
     });
     [self.view addSubview:self.keyfield];
@@ -151,10 +154,56 @@
 //        self.phoneboard.text = oldaccount;
 //    }
 }
+
+- (void)loadData{
+    NSLog(@"%@",Login_people);
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+//    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+    [manager GET:Login_people parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//        NSLog(@"%@",responseObject);
+        _menu1OptionTitles = responseObject;
+        [menu1 reloadOptionsData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+    }];
+    
+    
+}
+
 - (void)loginClick {
-    MainTabBarController *vc = [MainTabBarController new];
-    AppDelegate *delegate = [AppDelegate shareAppDelegate];
-    delegate.window.rootViewController = vc;
+    if (!self.loginID) {
+        [QMUITips showWithText:@"请选择登陆用户"];
+        return;
+    }
+    
+    if ([self.keyfield.text isEqualToString:@""]) {
+        [QMUITips showWithText:@"请输入密码"];
+        return;
+    }
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+    NSLog(@"%@",Login_in);
+    [manager POST:Login_in parameters:@{@"inspector":self.loginID,@"password":self.keyfield.text} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse*)task.response;
+        NSDictionary *dict = httpURLResponse.allHeaderFields;
+        if (dict && dict[@"Authorization"]) {
+            SaveToken(dict[@"Authorization"]);
+            MainTabBarController *vc = [MainTabBarController new];
+            AppDelegate *delegate = [AppDelegate shareAppDelegate];
+            delegate.window.rootViewController = vc;
+        }
+        NSLog(@"%@",dict);
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }];
+    
+    
+    
+
 }
  
 #pragma mark - LMJDropdownMenu DataSource
@@ -165,12 +214,12 @@
     return 35;
 }
 - (NSString *)dropdownMenu:(LMJDropdownMenu *)menu titleForOptionAtIndex:(NSUInteger)index{
-    return _menu1OptionTitles[index];
+    return [_menu1OptionTitles[index] valueForKey:@"name"];
 }
 
 #pragma mark - LMJDropdownMenu Delegate
 - (void)dropdownMenu:(LMJDropdownMenu *)menu didSelectOptionAtIndex:(NSUInteger)index optionTitle:(NSString *)title{
-
+    self.loginID = [NSString stringWithFormat:@"%@", [_menu1OptionTitles[index] valueForKey:@"id"]];
 }
 
 @end

@@ -15,7 +15,7 @@
 
 #import "PiontDetailVC.h"
 @interface XunJianDetailVC ()<UITableViewDelegate,UITableViewDataSource,LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
-@property (nonatomic,strong) XJModel *tmpModel;
+
 @end
 
 @implementation XunJianDetailVC
@@ -26,7 +26,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     menuOptionTitles = @[@"运行",@"备用",@"检修"];
-    self.tmpModel = XJModel.new;
     [self createUI];
     [self loadDate];
 }
@@ -72,13 +71,26 @@
       
     };
     XJModel *m = [XJModel modelWithDictionary:dic];
+    NSMutableArray *marr = [NSMutableArray array];
+    for (EqModel *model in m.equipments) {
+        [marr addObject:model];
+        for (PointModel *point in model.points) {
+            [marr addObject:point];
+        }
+    }
+    m.totalArr = marr;
+    
+    
 //    NSLog(@"%@",m.equipments[0].points[1].item.standard);
-    self.tmpModel = m;
+    self.dataList = [@[m,m,m] mutableCopy];
+    
     [self.tableView reloadData];
+    
+    
 }
 #pragma mark --- table delegte datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.dataList.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 50;
@@ -87,9 +99,10 @@
     
     SectionSimple *view = [[[NSBundle mainBundle] loadNibNamed:@"SectionSimple" owner:self options:nil]firstObject];
     view.userInteractionEnabled = YES;
+    XJModel *model = self.dataList[section];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithActionBlock:^(id  _Nonnull sender) {
-        self->_tmpModel.show = !self->_tmpModel.show;
-        [self.tableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
+        model.show = !model.show;
+        [self.tableView reloadSection:section withRowAnimation:UITableViewRowAnimationAutomatic];
     }];
     [view addGestureRecognizer:tap];
     return view;
@@ -97,12 +110,10 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 //    return self.dataList.count;
-    if (!_tmpModel.show) {
-        return 0;
-    }else{
-        
-        return _tmpModel.equipments[0].show ? 3 : 1;
-    }
+    
+    XJModel *model = self.dataList[section];
+    return model.totalArr.count;
+   
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -110,7 +121,10 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==0) {
+    XJModel *xjmodel = self.dataList[indexPath.section];
+    NSMutableArray *marr = xjmodel.totalArr;
+    id obj = marr[indexPath.row];
+    if ([obj isKindOfClass:[EqModel class]]) {
 
         ItemOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemOneCell"];
         if (cell == nil) {
@@ -136,19 +150,21 @@
             cell.menu.optionNumberOfLines   = 1;
             cell.menu.optionLineColor       = [UIColor whiteColor];
         }
+        
+        EqModel *model = obj;
         //是否展示子cell
-        cell.arrowBtn.selected = self.tmpModel.equipments[0].show;
+        cell.arrowBtn.selected = model.show;
         //按钮正常 是否勾选
-        cell.choseBtn.selected = self.tmpModel.equipments[0].normal;
-        cell.normalBtn.selected = self.tmpModel.equipments[0].normal;
+        cell.choseBtn.selected = model.normal;
+        cell.normalBtn.selected = model.normal;
         
         [cell.normalBtn addTapBlock:^(UIButton *btn) {
             btn.selected = !btn.selected;
-            self.tmpModel.equipments[0].normal = btn.selected;
+            model.normal = btn.selected;
             //按钮正常 是否勾选
 //            cell.choseBtn.selected = btn.selected;
 //            cell.normalBtn.selected = btn.selected;
-            [self.tableView reloadSection:0 withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
         return cell;
             
@@ -158,15 +174,15 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemTwoCell" owner:self options:nil]firstObject];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        PointModel *point = self.tmpModel.equipments[0].points[indexPath.row-1];
-        if (point.normal || self.tmpModel.equipments[0].normal) {
+        PointModel *point = obj;
+        if (point.normal) {
             cell.choseBtn.selected = YES;
             cell.normalBtn.selected = YES;
             cell.erorBtn.selected = NO;
         }else{
-            cell.choseBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].normalChose || self.tmpModel.equipments[0].points[indexPath.row-1].errorChose;
-            cell.normalBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].normalChose;
-            cell.erorBtn.selected = self.tmpModel.equipments[0].points[indexPath.row-1].errorChose;
+            cell.choseBtn.selected = point.normalChose || point.errorChose;
+            cell.normalBtn.selected = point.normalChose;
+            cell.erorBtn.selected = point.errorChose;
         }
         [cell.normalBtn addTapBlock:^(UIButton *btn) {
             cell.choseBtn.selected = YES;
@@ -192,14 +208,14 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row==0) {
-        _tmpModel.equipments[0].show = !_tmpModel.equipments[0].show;
-        [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
-    }else{
+//    if (indexPath.row==0) {
+//        _tmpModel.equipments[0].show = !_tmpModel.equipments[0].show;
+//        [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
+//    }else{
         PiontDetailVC *vc = PiontDetailVC.new;
         vc.title = @"测项详情";
         [self.navigationController pushViewController:vc animated:YES];
-    }
+    
 }
 
 
