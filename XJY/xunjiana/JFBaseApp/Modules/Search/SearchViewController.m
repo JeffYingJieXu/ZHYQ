@@ -29,9 +29,13 @@
     self.StatusBarStyle = UIStatusBarStyleLightContent;
     self.isShowLiftBack = NO;//每个根视图需要设置该属性为NO，否则会出现导航栏异常
     self.view.backgroundColor = CViewBgColor;
+    
+    choseparam = @"0111";
     [self createUI];
 }
-
+- (void)viewDidAppear:(BOOL)animated{
+    [self loadData];
+}
 -(void)createUI{
     
     UILabel *datelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 100, 32)];
@@ -46,7 +50,7 @@
 //    calendarBtn.backgroundColor = KWhiteColor;
     [calendarBtn setBackgroundColor:KWhiteColor];
     NSDate *date = [NSDate date];
-    _currentDateStr = [date stringWithFormat:@"yyyyMMdd"];
+    _currentDateStr = [date stringWithFormat:@"yyyy-MM-dd"];
     [calendarBtn setTitle:[date stringWithFormat:@"yyyy-MM-dd"] forState:UIControlStateNormal];
     calendarBtn.titleLabel.font = UIFontMake(14);
     calendarBtn.frame = CGRectMake(110, 10, 130, 32);
@@ -119,9 +123,13 @@
         }else{
             choseParams[btn.tag-11] = @"0";
         }
+        UIButton *tempbtn = choseBtns[0];
+        tempbtn.selected = NO;
+        choseParams[0] = @"0";
         choseparam = [choseParams componentsJoinedByString:@""];
     }
-    NSLog(@"%@",choseparam);
+    
+    [self loadData];
 }
 - (WSDatePickerView *)datepicker
 {
@@ -129,9 +137,9 @@
         WSDatePickerView *datepicker = [[WSDatePickerView alloc] initWithDateStyle:DateStyleShowYearMonthDay CompleteBlock:^(NSDate *selectDate) {
 
             NSString *dateshow = [selectDate    stringWithFormat:@"yyyy-MM-dd"];
-            NSString *dateParam = [selectDate stringWithFormat:@"yyyyMMdd"];
+//            NSString *dateParam = [selectDate stringWithFormat:@"yyyyMMdd"];
             [self.calendarBtn setTitle:dateshow forState:0];
-            self.currentDateStr = dateParam;
+            self.currentDateStr = dateshow;
             [self loadData];
         }];
         datepicker.datePickerColor = KBlackColor;
@@ -153,6 +161,25 @@
 }
 #pragma mark ------------请求数据
 -(void)loadData{
+    NSLog(@"%@  %@",self.currentDateStr,choseparam);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+    [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:XJ_taskSearch parameters:@{@"time":self.currentDateStr,@"type":choseparam} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSLog(@"%@",responseObject);
+        if ([responseObject valueForKey:@"list"]) {
+            self.dataList = [[responseObject valueForKey:@"list"] mutableCopy];
+            [self.tableView reloadData];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }];
+    
+    
     
 }
 #pragma mark --- table delegte datasource
@@ -167,6 +194,35 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SearchCell *cell = [SearchCell cellInTableView:tableView withIdentifier:@"SearchCell"];
+    
+    NSDictionary *dic = self.dataList[indexPath.row];
+    /*
+     *routename;
+     *dutyname;
+     *starttime;
+     *endtime;
+     *yichang;
+     *loujian;
+     *beiyong;
+     *normalnum;
+     *weixiu;
+     *baseview;
+     *jianxiu;
+     *haoshi;
+     
+     */
+    cell.routename.text = StrFromDict(dic,@"route");
+    cell.dutyname.text = StrFromDict(dic,@"inspectorName");
+    cell.starttime.text = StrFromDict(dic,@"processStart");
+    cell.endtime.text = StrFromDict(dic,@"processEnd");
+    cell.haoshi.text = StrFromDict(dic,@"timeConsuming");
+    cell.normalnum.text = StrFromDict(dic,@"normal");
+    cell.weixiu.text = StrFromDict(dic,@"report");
+    cell.jianxiu.text = StrFromDict(dic,@"maintain");
+    
+    cell.loujian.text = StrFromDict(dic,@"missed");
+    cell.beiyong.text = StrFromDict(dic,@"backup");
+    cell.yichang.text = StrFromDict(dic,@"abnormal");
     return cell;
 }
 

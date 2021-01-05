@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *beiyong;
 @property (weak, nonatomic) IBOutlet UILabel *normalnum;
 @property (weak, nonatomic) IBOutlet UILabel *weixiu;
-@property (weak, nonatomic) IBOutlet UIView *baseview;
+@property (weak, nonatomic) IBOutlet UIView  *baseview;
 @property (weak, nonatomic) IBOutlet UILabel *jianxiu;
 @property (weak, nonatomic) IBOutlet UILabel *haoshi;
 

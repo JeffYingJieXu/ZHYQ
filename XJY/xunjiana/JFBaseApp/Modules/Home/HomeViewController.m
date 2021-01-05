@@ -31,6 +31,27 @@
     [self.view addSubview:self.tableView];
     
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [self loadData];
+}
+- (void)loadData {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+    [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:XJ_taskList parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSLog(@"%@",responseObject);
+        if ([responseObject isKindOfClass:[NSArray class]]) {
+            self.dataList = [responseObject mutableCopy];
+            [self.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }];
+}
 #pragma mark --- table delegte datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 //    return self.dataList.count;
@@ -43,6 +64,20 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     HomeCell *cell = [HomeCell cellInTableView:tableView index:0 withIdentifier:@"HomeCell"];
+    NSDictionary *dic = self.dataList[indexPath.row];
+    NSDictionary *namedic = [dic valueForKey:@"taskTemplate"];
+    if (namedic) {
+        cell.routename.text = StrFromDict(namedic, @"name");
+    }
+    
+    if ([[dic valueForKey:@"status"] isEqualToString:@"NOT_START"]) {
+        cell.routename.backgroundColor = [UIColor darkGrayColor];
+    }else{
+        cell.routename.backgroundColor = [UIColor greenColor];
+    }
+    
+    cell.timelabel.text = [NSString stringWithFormat:@"%@ -- %@",dic[@"start"],dic[@"end"]];
+    
     return cell;
 }
 

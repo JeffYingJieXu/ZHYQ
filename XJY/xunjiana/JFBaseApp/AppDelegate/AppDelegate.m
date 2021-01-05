@@ -22,7 +22,13 @@
     //初始化window
     [self initWindow];
     
-    self.window.rootViewController = [LoginVC new];
+    
+    if (LatestToken) {
+        NSLog(@"aaa %@",LatestToken);
+        self.window.rootViewController = [MainTabBarController new];
+    }else{
+        self.window.rootViewController = [LoginVC new];
+    }
     
     //UMeng初始化
 //    [self initUMeng];

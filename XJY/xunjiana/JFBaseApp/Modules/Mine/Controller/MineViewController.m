@@ -88,6 +88,7 @@
     
 }
 -(void)loginOut{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"latestToken"];
     LoginVC *vc = [LoginVC new];
     AppDelegate *delegate = [AppDelegate shareAppDelegate];
     delegate.window.rootViewController = vc;

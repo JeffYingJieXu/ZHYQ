@@ -70,5 +70,13 @@
 //登录
 #define Login_in [NSString stringWithFormat:@"%@/%@",URL_main,@"inspectors/login"]
 
+//巡检任务列表
+#define XJ_taskList [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks"]
+
+//巡检任务查询
+#define XJ_taskSearch [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks/statistics/2/0"]
+
+
+
 
 #endif /* URLMacros_h */
