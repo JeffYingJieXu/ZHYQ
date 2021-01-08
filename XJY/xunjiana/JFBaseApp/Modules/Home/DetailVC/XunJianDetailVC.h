@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface XunJianDetailVC : RootViewController
-
+@property (nonatomic,copy) NSString *taskID;
 @end
 
 NS_ASSUME_NONNULL_END

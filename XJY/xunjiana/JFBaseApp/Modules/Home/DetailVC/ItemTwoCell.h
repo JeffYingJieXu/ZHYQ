@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UIButton *normalBtn;
 @property (weak, nonatomic) IBOutlet UIButton *erorBtn;
+@property (weak, nonatomic) IBOutlet UIView *coverWhite;
 
 @end
 

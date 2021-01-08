@@ -17,13 +17,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23:30 -- 00:30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32A-AT-6tC">
-                        <rect key="frame" x="15" y="0.0" width="188.5" height="137"/>
+                        <rect key="frame" x="15" y="0.0" width="209.5" height="137"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123#炉巡检路线" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="020-xu-dHG">
-                        <rect key="frame" x="203.5" y="46.5" width="188.5" height="44"/>
+                        <rect key="frame" x="224.5" y="46.5" width="167.5" height="44"/>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="6ra-cq-sEM"/>
@@ -35,7 +35,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="32A-AT-6tC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="0dd-c1-g3y"/>
-                    <constraint firstItem="020-xu-dHG" firstAttribute="width" secondItem="32A-AT-6tC" secondAttribute="width" id="4GR-oj-sng"/>
+                    <constraint firstItem="020-xu-dHG" firstAttribute="width" secondItem="32A-AT-6tC" secondAttribute="width" multiplier="0.8" id="4GR-oj-sng"/>
                     <constraint firstItem="020-xu-dHG" firstAttribute="leading" secondItem="32A-AT-6tC" secondAttribute="trailing" id="4oT-si-SeH"/>
                     <constraint firstAttribute="trailing" secondItem="020-xu-dHG" secondAttribute="trailing" constant="15" id="NIX-hM-8zw"/>
                     <constraint firstItem="020-xu-dHG" firstAttribute="leading" secondItem="32A-AT-6tC" secondAttribute="trailing" id="cwI-eF-974"/>

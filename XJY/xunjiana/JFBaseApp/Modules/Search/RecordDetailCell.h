@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *result;
 @property (weak, nonatomic) IBOutlet UILabel *testnum;
 @property (weak, nonatomic) IBOutlet UILabel *descrip;
+@property (weak, nonatomic) IBOutlet UIImageView *somePics;
 + (instancetype)cellInTableView:(UITableView *)tableView withIdentifier:(NSString *)identifier;
 @end
 

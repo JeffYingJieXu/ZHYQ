@@ -27,13 +27,39 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorColor = CViewBgColor;
+    self.tableView.mj_footer = nil;
     [self.view addSubview:self.tableView];
     
 }
+- (void)headerRereshing {
+    [self loadData];
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [self loadData];
+}
+
+- (void)loadData {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+    [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+    
+    [manager GET:XJ_taskDetail parameters:@{@"taskId":self.taskID} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        NSLog(@"%@",responseObject);
+        if ([responseObject valueForKey:@"list"]) {
+            self.dataList = [[responseObject valueForKey:@"list"] mutableCopy];
+            [self.tableView reloadData];
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }];
+}
+
 #pragma mark --- table delegte datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return self.dataList.count;
-    return 10;
+    return self.dataList.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -51,6 +77,12 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RecordDetailCell *cell = [RecordDetailCell cellInTableView:tableView withIdentifier:@"RecordDetailCell"];
+    NSDictionary *dic = self.dataList[indexPath.row];
+    cell.name.text = StrFromDict(dic, @"equipName");
+    cell.point.text = StrFromDict(dic, @"pointName");
+    cell.result.text = [dic[@"status"] isEqualToString:@"NORMAL"] ? @"正常" : @"异常" ;
+    cell.testnum.text = StrFromDict(dic, @"value");
+    cell.descrip.text = StrFromDict(dic, @"remark");
     return cell;
 }
 

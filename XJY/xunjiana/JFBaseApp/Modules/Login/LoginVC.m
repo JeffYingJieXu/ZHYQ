@@ -13,7 +13,8 @@
 #import "AppDelegate+Service.h"
 @interface LoginVC () <LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
 @property (nonatomic,strong)QMUITextField * keyfield;
-@property (nonatomic,strong)NSString *loginID;
+@property (nonatomic,copy)NSString *loginID;
+@property (nonatomic,copy)NSString *loginName;
 @end
 
 @implementation LoginVC
@@ -191,6 +192,7 @@
         NSDictionary *dict = httpURLResponse.allHeaderFields;
         if (dict && dict[@"Authorization"]) {
             SaveToken(dict[@"Authorization"]);
+            [kUserDefaults setValue:self.loginName forKey:@"loginName"];
             MainTabBarController *vc = [MainTabBarController new];
             AppDelegate *delegate = [AppDelegate shareAppDelegate];
             delegate.window.rootViewController = vc;
@@ -220,6 +222,7 @@
 #pragma mark - LMJDropdownMenu Delegate
 - (void)dropdownMenu:(LMJDropdownMenu *)menu didSelectOptionAtIndex:(NSUInteger)index optionTitle:(NSString *)title{
     self.loginID = [NSString stringWithFormat:@"%@", [_menu1OptionTitles[index] valueForKey:@"id"]];
+    self.loginName = StrFromDict(_menu1OptionTitles[index], @"name");
 }
 
 @end

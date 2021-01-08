@@ -56,6 +56,10 @@
     headv.frame = CGRectMake(0, 0, KScreenWidth, 166);
     self.tableView.tableHeaderView = headv;
     
+    if ([kUserDefaults valueForKey:@"loginName"]) {
+        headv.headNickName.text = [kUserDefaults valueForKey:@"loginName"];
+    }
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {
         
         LoginVC *vc = [LoginVC new];

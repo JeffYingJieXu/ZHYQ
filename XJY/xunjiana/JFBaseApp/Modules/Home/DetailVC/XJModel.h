@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,assign)  int ID;
 @property (nonatomic,copy) NSString *name;
 @property (nonatomic,assign) BOOL show;
+@property (nonatomic,assign) BOOL finish;
 @property (nonatomic,strong) NSArray <EqModel *> *equipments;
 @property (nonatomic,strong) NSMutableArray *totalArr;
 @end
@@ -40,7 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PointModel : NSObject
 @property (nonatomic,assign)  int ID;
 @property (nonatomic,copy) NSString *name;
-
+@property (nonatomic,copy) NSString *type;
 /// 正常 or 异常
 @property (nonatomic,assign) BOOL normalChose;
 @property (nonatomic,assign) BOOL errorChose;

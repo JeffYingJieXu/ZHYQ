@@ -25,66 +25,70 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = KWhiteColor;
     menuOptionTitles = @[@"运行",@"备用",@"检修"];
     [self createUI];
     [self loadDate];
 }
 
 -(void)createUI{
-    self.tableView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight - kTopHeight-100);
+    self.tableView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight - kTopHeight-90);
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorColor = KWhiteColor;
+    self.tableView.mj_header = nil;
+    self.tableView.mj_footer = nil;
     [self.view addSubview:self.tableView];
+    
+    QMUIButton *button = [QMUIButton new];
+    button.adjustsButtonWhenHighlighted = YES;
+    button.titleLabel.font = UIFontBoldMake(22);
+    [button setTitleColor:UIColorWhite forState:UIControlStateNormal];
+    button.backgroundColor = CThemeColor;
+    button.layer.cornerRadius = 6;
+    [self.view addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.view).offset(-20);
+        make.centerX.mas_equalTo(self.view);
+        make.size.mas_equalTo(CGSizeMake(KScreenWidth*0.65, 50));
+    }];
+    [button setTitle:@"结束任务" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(finishTask) forControlEvents:UIControlEventTouchUpInside];
+    
+}
+- (void)finishTask {
     
 }
 - (void)loadDate {
-    NSDictionary *dic = @{
-        @"id": @1,
-        @"name": @"废水加药间区域",
-        @"equipments": @[
-            @{@"id": @1,
-              @"name": @"有机硫箱加药系统",
-              @"points": @[
-                    @{@"id": @1,
-                      @"name": @"有机硫箱液位、管道阀门状态",
-                      @"type": @"OBSERVE",
-                      @"item": @{
-                              @"id": @1,
-                              @"name": @"液位是否正常、管道阀门是否无泄漏",
-                              @"standard": @"是",
-                              @"unit": @""}
-                    },
-                    @{
-                        @"id": @2,
-                        @"name": @"有机硫各计量泵运行状态",
-                        @"type": @"OBSERVE",
-                        @"item": @{
-                            @"id": @2,
-                            @"name": @"各计量泵是否在运转、运转是否正常",
-                            @"standard": @"是",
-                            @"unit": @""}
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+    [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+    NSString *urlName = TaskList;
+    NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,self.taskID];
+    NSLog(@"%@",url);
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject[@"areas"] isKindOfClass:[NSArray class]]) {
+            NSArray *arr = responseObject[@"areas"];
+            for (NSDictionary *dic in arr) {
+                XJModel *m = [XJModel modelWithDictionary:dic];
+                NSMutableArray *marr = [NSMutableArray array];
+                for (EqModel *model in m.equipments) {
+                    [marr addObject:model];
+                    for (PointModel *point in model.points) {
+                        [marr addObject:point];
                     }
-              ]
+                }
+                m.totalArr = marr;
+                
+                [self.dataList addObject:m];
             }
-        ]
-      
-    };
-    XJModel *m = [XJModel modelWithDictionary:dic];
-    NSMutableArray *marr = [NSMutableArray array];
-    for (EqModel *model in m.equipments) {
-        [marr addObject:model];
-        for (PointModel *point in model.points) {
-            [marr addObject:point];
+            [self.tableView reloadData];
         }
-    }
-    m.totalArr = marr;
-    
-    
-//    NSLog(@"%@",m.equipments[0].points[1].item.standard);
-    self.dataList = [@[m,m,m] mutableCopy];
-    
-    [self.tableView reloadData];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@",[error localizedDescription]);
+    }];
     
     
 }
@@ -97,9 +101,15 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    SectionSimple *view = [[[NSBundle mainBundle] loadNibNamed:@"SectionSimple" owner:self options:nil]firstObject];
-    view.userInteractionEnabled = YES;
     XJModel *model = self.dataList[section];
+    
+    SectionSimple *view = [[[NSBundle mainBundle] loadNibNamed:@"SectionSimple" owner:self options:nil]firstObject];
+    view.SectionTitle.text = model.name;
+    [view.DoneBtn addTapBlock:^(UIButton *btn) {
+        model.finish = !model.finish;
+        btn.selected = model.finish;
+    }];
+    view.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithActionBlock:^(id  _Nonnull sender) {
         model.show = !model.show;
         [self.tableView reloadSection:section withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -112,7 +122,7 @@
 //    return self.dataList.count;
     
     XJModel *model = self.dataList[section];
-    return model.totalArr.count;
+    return model.show ? model.totalArr.count : 0;
    
 }
 
@@ -125,7 +135,6 @@
     NSMutableArray *marr = xjmodel.totalArr;
     id obj = marr[indexPath.row];
     if ([obj isKindOfClass:[EqModel class]]) {
-
         ItemOneCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ItemOneCell"];
         if (cell == nil) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"ItemOneCell" owner:self options:nil]firstObject];
@@ -152,6 +161,8 @@
         }
         
         EqModel *model = obj;
+        
+        cell.name.text = model.name;
         //是否展示子cell
         cell.arrowBtn.selected = model.show;
         //按钮正常 是否勾选
@@ -175,6 +186,8 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         PointModel *point = obj;
+        cell.name.text = point.name;
+        cell.coverWhite.hidden = [point.type isEqualToString:@"OBSERVE"];
         if (point.normal) {
             cell.choseBtn.selected = YES;
             cell.normalBtn.selected = YES;

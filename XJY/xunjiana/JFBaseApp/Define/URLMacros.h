@@ -28,7 +28,7 @@
 #if DevelopSever
 
 /**开发服务器*/
-#define URL_main @"http://120.195.38.107:38080"
+#define URL_main @"http://10.100.40.211:10080"
 //#define URL_main @"http://192.168.11.122:8090" //展鹏
 
 #elif TestSever
@@ -39,7 +39,7 @@
 #elif ProductSever
 
 /**生产服务器*/
-#define URL_main @"http://119.3.153.71:30081"
+#define URL_main @"http://120.195.38.107:38080"
 #endif
 
 
@@ -76,6 +76,11 @@
 //巡检任务查询
 #define XJ_taskSearch [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks/statistics/2/0"]
 
+//巡检任务详情
+#define XJ_taskDetail [NSString stringWithFormat:@"%@/%@",URL_main,@"task-results/pageDtail/0"]
+
+//获取巡检任务模板
+#define TaskList [NSString stringWithFormat:@"%@/%@",URL_main,@"task-templates"]
 
 
 

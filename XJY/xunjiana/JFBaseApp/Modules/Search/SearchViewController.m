@@ -96,6 +96,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorColor = CViewBgColor;
+    self.tableView.mj_footer = nil;
     [self.view addSubview:self.tableView];
     
 }
@@ -154,10 +155,7 @@
     [self.datepicker show];
 }
 - (void)headerRereshing{
-    [self.tableView.mj_header endRefreshing];
-}
--(void)footerRereshing{
-    [self.tableView.mj_footer endRefreshing];
+    [self loadData];
 }
 #pragma mark ------------请求数据
 -(void)loadData{
@@ -168,7 +166,8 @@
     [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
     
     [manager GET:XJ_taskSearch parameters:@{@"time":self.currentDateStr,@"type":choseparam} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+
+        [self.tableView.mj_header endRefreshing];
         NSLog(@"%@",responseObject);
         if ([responseObject valueForKey:@"list"]) {
             self.dataList = [[responseObject valueForKey:@"list"] mutableCopy];
@@ -176,6 +175,7 @@
         }
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [self.tableView.mj_header endRefreshing];
         NSLog(@"%@",[error localizedDescription]);
     }];
     
@@ -184,8 +184,7 @@
 }
 #pragma mark --- table delegte datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return self.dataList.count;
-    return 6;
+    return self.dataList.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -227,7 +226,9 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *dic = self.dataList[indexPath.row];
     RecordDetailVC *vc = RecordDetailVC.new;
+    vc.taskID = StrFromDict(dic, @"id");
     [self.navigationController pushViewController:vc animated:YES];
 }
 /*

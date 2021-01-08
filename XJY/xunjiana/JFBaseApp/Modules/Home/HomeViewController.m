@@ -28,10 +28,13 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorColor = CViewBgColor;
+    self.tableView.mj_footer = nil;
     [self.view addSubview:self.tableView];
     
 }
-
+-(void)headerRereshing{
+    [self loadData];
+}
 - (void)viewDidAppear:(BOOL)animated {
     [self loadData];
 }
@@ -40,7 +43,6 @@
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
     [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
-    
     [manager GET:XJ_taskList parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"%@",responseObject);
@@ -54,8 +56,7 @@
 }
 #pragma mark --- table delegte datasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return self.dataList.count;
-    return 10;
+    return self.dataList.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -71,19 +72,29 @@
     }
     
     if ([[dic valueForKey:@"status"] isEqualToString:@"NOT_START"]) {
-        cell.routename.backgroundColor = [UIColor darkGrayColor];
-    }else{
+        cell.routename.backgroundColor = [UIColor lightGrayColor];
+    }else if ([[dic valueForKey:@"status"] isEqualToString:@"PROCESSING"]) {
+        cell.routename.backgroundColor = CThemeColor;
+    }else {
         cell.routename.backgroundColor = [UIColor greenColor];
     }
     
-    cell.timelabel.text = [NSString stringWithFormat:@"%@ -- %@",dic[@"start"],dic[@"end"]];
-    
+    cell.timelabel.text = [NSString stringWithFormat:@"%@ -- %@",[dic[@"start"] substringFromIndex:12],[dic[@"end"] substringFromIndex:12]];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSDictionary *dic = self.dataList[indexPath.row];
+    NSDictionary *namedic = [dic valueForKey:@"taskTemplate"];
+    
+    if ([[dic valueForKey:@"status"] isEqualToString:@"NOT_START"]) {
+//        return ;
+    }
     XunJianDetailVC *vc = XunJianDetailVC.new;
-    vc.title = @"123#炉巡检路线";
+    vc.taskID = StrFromDict(namedic, @"id");
+    if (namedic) {
+        vc.title = StrFromDict(namedic, @"name");
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
