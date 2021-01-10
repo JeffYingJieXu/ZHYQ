@@ -22,7 +22,7 @@
                             <constraint firstAttribute="height" constant="24" id="ark-m1-J1K"/>
                             <constraint firstAttribute="width" constant="24" id="puD-LG-f3P"/>
                         </constraints>
-                        <state key="normal" image="xjr.png"/>
+                        <state key="normal" image="xjd.png"/>
                         <state key="selected" image="xjd.png"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qr-5P-DbV">
@@ -99,7 +99,6 @@
         <image name="xjd.png" width="16" height="16"/>
         <image name="xjg.png" width="24" height="24"/>
         <image name="xjk.png" width="24" height="24"/>
-        <image name="xjr.png" width="16" height="16"/>
         <image name="xjs.png" width="24" height="24"/>
     </resources>
 </document>

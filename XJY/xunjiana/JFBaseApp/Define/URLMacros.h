@@ -70,17 +70,21 @@
 //登录
 #define Login_in [NSString stringWithFormat:@"%@/%@",URL_main,@"inspectors/login"]
 
-//巡检任务列表
-#define XJ_taskList [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks"]
-
 //巡检任务查询
 #define XJ_taskSearch [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks/statistics/2/0"]
 
 //巡检任务详情
 #define XJ_taskDetail [NSString stringWithFormat:@"%@/%@",URL_main,@"task-results/pageDtail/0"]
 
+//巡检任务列表
+#define XJ_taskList [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks"]
+
+//巡检任务点击确认开始
+#define XJ_taskStart [NSString stringWithFormat:@"%@/%@",URL_main,@"tasks/start"]
+
 //获取巡检任务模板
 #define TaskList [NSString stringWithFormat:@"%@/%@",URL_main,@"task-templates"]
+
 
 
 

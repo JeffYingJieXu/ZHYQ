@@ -89,6 +89,31 @@
     
     if ([[dic valueForKey:@"status"] isEqualToString:@"NOT_START"]) {
 //        return ;
+    } else if ([[dic valueForKey:@"status"] isEqualToString:@"end"]) {
+        
+    } else {
+        QMUIAlertController *alertController = [QMUIAlertController alertControllerWithTitle:@"提示" message:@"是否开始巡检" preferredStyle:QMUIAlertControllerStyleAlert];
+        [alertController addAction:[QMUIAlertAction actionWithTitle:@"取消" style:QMUIAlertActionStyleCancel handler:nil]];
+        [alertController addAction:[QMUIAlertAction actionWithTitle:@"确定" style:QMUIAlertActionStyleDefault handler:^(__kindof QMUIAlertController * _Nonnull aAlertController, QMUIAlertAction * _Nonnull action) {
+            
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.requestSerializer = [AFJSONRequestSerializer serializer];
+            [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+            
+            NSString *urlName = XJ_taskStart;
+            NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,StrFromDict(namedic, @"id")];
+            [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSLog(@"任务开始：\n%@",responseObject);
+                if ([[responseObject objectForKey:@"status"] isEqualToString:@"PROCESSING"]) {
+                    
+                    
+                }
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"%@",[error localizedDescription]);
+            }];
+            
+        }]];
+        [alertController showWithAnimated:YES];
     }
     XunJianDetailVC *vc = XunJianDetailVC.new;
     vc.taskID = StrFromDict(namedic, @"id");

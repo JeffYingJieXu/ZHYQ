@@ -164,7 +164,7 @@
         
         cell.name.text = model.name;
         //是否展示子cell
-        cell.arrowBtn.selected = model.show;
+//        cell.arrowBtn.selected = model.show;
         //按钮正常 是否勾选
         cell.choseBtn.selected = model.normal;
         cell.normalBtn.selected = model.normal;
@@ -175,6 +175,12 @@
             //按钮正常 是否勾选
 //            cell.choseBtn.selected = btn.selected;
 //            cell.normalBtn.selected = btn.selected;
+            model.haveDone = btn.selected;
+            for (PointModel *tpm in model.points) {
+                tpm.haveDone = YES;
+                tpm.normal = YES;
+            }
+            
             [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
         return cell;
@@ -188,6 +194,10 @@
         PointModel *point = obj;
         cell.name.text = point.name;
         cell.coverWhite.hidden = [point.type isEqualToString:@"OBSERVE"];
+
+        cell.choseBtn.selected = point.haveDone;
+        cell.normalBtn.selected = point.normal;
+        cell.erorBtn.selected = point.normal;
         if (point.normal) {
             cell.choseBtn.selected = YES;
             cell.normalBtn.selected = YES;
@@ -225,10 +235,25 @@
 //        _tmpModel.equipments[0].show = !_tmpModel.equipments[0].show;
 //        [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
 //    }else{
+    
+    
+    XJModel *xjmodel = self.dataList[indexPath.section];
+    NSMutableArray *marr = xjmodel.totalArr;
+    id obj = marr[indexPath.row];
+    if ([obj isKindOfClass:[PointModel class]]) {
+        PointModel *point = obj;
         PiontDetailVC *vc = PiontDetailVC.new;
         vc.title = @"测项详情";
+        vc.name = point.item.name;
+        vc.standard = point.item.standard;
+//        vc.normal = ;
+//        vc.xiu = ;
+//        vc.remark = ;
+        [vc setSomeBlock:^(BOOL normal, BOOL xiu, NSString * _Nonnull remark) {
+            
+        }];
         [self.navigationController pushViewController:vc animated:YES];
-    
+    }
 }
 
 

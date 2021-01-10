@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *name;
 @property (weak, nonatomic) IBOutlet UIButton *normalBtn;
 @property (weak, nonatomic) IBOutlet LMJDropdownMenu *menu;
-@property (nonatomic, weak) void(^ItemOneBlock)(BOOL normal,NSString *type);
 
 @end
 
