@@ -44,7 +44,7 @@
     //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
     [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
     [manager GET:XJ_taskList parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
+        [self.tableView.mj_header endRefreshing];
         NSLog(@"%@",responseObject);
         if ([responseObject isKindOfClass:[NSArray class]]) {
             self.dataList = [responseObject mutableCopy];
@@ -52,6 +52,7 @@
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",[error localizedDescription]);
+        [self.tableView.mj_header endRefreshing];
     }];
 }
 #pragma mark --- table delegte datasource
@@ -79,7 +80,7 @@
         cell.routename.backgroundColor = [UIColor greenColor];
     }
     
-    cell.timelabel.text = [NSString stringWithFormat:@"%@ -- %@",[dic[@"start"] substringFromIndex:12],[dic[@"end"] substringFromIndex:12]];
+    cell.timelabel.text = [NSString stringWithFormat:@"%@ -- %@",[dic[@"start"] substringFromIndex:11],[dic[@"end"] substringFromIndex:11]];
     return cell;
 }
 
@@ -87,11 +88,9 @@
     NSDictionary *dic = self.dataList[indexPath.row];
     NSDictionary *namedic = [dic valueForKey:@"taskTemplate"];
     
-    if ([[dic valueForKey:@"status"] isEqualToString:@"NOT_START"]) {
+    if ([[dic valueForKey:@"status"] isEqualToString:@"end"]) {
 //        return ;
-    } else if ([[dic valueForKey:@"status"] isEqualToString:@"end"]) {
-        
-    } else {
+    } else if ([[dic valueForKey:@"status"] isEqualToString:@"NOT_START"]) {
         QMUIAlertController *alertController = [QMUIAlertController alertControllerWithTitle:@"提示" message:@"是否开始巡检" preferredStyle:QMUIAlertControllerStyleAlert];
         [alertController addAction:[QMUIAlertAction actionWithTitle:@"取消" style:QMUIAlertActionStyleCancel handler:nil]];
         [alertController addAction:[QMUIAlertAction actionWithTitle:@"确定" style:QMUIAlertActionStyleDefault handler:^(__kindof QMUIAlertController * _Nonnull aAlertController, QMUIAlertAction * _Nonnull action) {
@@ -101,26 +100,32 @@
             [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
             
             NSString *urlName = XJ_taskStart;
-            NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,StrFromDict(namedic, @"id")];
+            NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,StrFromDict(dic, @"id")];
             [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"任务开始：\n%@",responseObject);
-                if ([[responseObject objectForKey:@"status"] isEqualToString:@"PROCESSING"]) {
-                    
-                    
+                XunJianDetailVC *vc = XunJianDetailVC.new;
+                vc.taskID = StrFromDict(namedic, @"id");
+                if (namedic) {
+                    vc.title = StrFromDict(namedic, @"name");
                 }
+                [self.navigationController pushViewController:vc animated:YES];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                NSLog(@"%@",[error localizedDescription]);
+                NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse*)task.response;
+                NSDictionary *dict = httpURLResponse.allHeaderFields;
+                
+                NSLog(@"%@",dict[@"message"]);
             }];
             
         }]];
         [alertController showWithAnimated:YES];
+    } else {
+        XunJianDetailVC *vc = XunJianDetailVC.new;
+        vc.taskID = StrFromDict(namedic, @"id");
+        if (namedic) {
+            vc.title = StrFromDict(namedic, @"name");
+        }
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    XunJianDetailVC *vc = XunJianDetailVC.new;
-    vc.taskID = StrFromDict(namedic, @"id");
-    if (namedic) {
-        vc.title = StrFromDict(namedic, @"name");
-    }
-    [self.navigationController pushViewController:vc animated:YES];
+      
 }
 
 /*

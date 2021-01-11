@@ -296,6 +296,9 @@
     if ([self.delegate respondsToSelector:@selector(dropdownMenu:didSelectOptionAtIndex:optionTitle:)]) {
         [self.delegate dropdownMenu:self didSelectOptionAtIndex:indexPath.row optionTitle:titleLabel.text];
     }
+    if (self.choseBlock) {
+        self.choseBlock(self.title);
+    }
     [self hideDropDown];
 }
 

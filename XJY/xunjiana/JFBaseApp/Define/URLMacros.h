@@ -85,6 +85,8 @@
 //获取巡检任务模板
 #define TaskList [NSString stringWithFormat:@"%@/%@",URL_main,@"task-templates"]
 
+//结束任务
+#define TaskDone [NSString stringWithFormat:@"%@/%@",URL_main,@"task-results/saveBatch"]
 
 
 

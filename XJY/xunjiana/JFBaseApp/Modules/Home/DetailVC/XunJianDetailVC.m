@@ -57,6 +57,58 @@
     
 }
 - (void)finishTask {
+    NSInteger  num = 0;
+    NSMutableArray *marr = [NSMutableArray array];
+    for (XJModel *xjm in self.dataList) {
+        for (EqModel *eqm in xjm.equipments) {
+            for (PointModel *point in eqm.points) {
+                NSString *state = [self stateEnglish:point.state];
+                NSDictionary *dic = @{
+                    @"taskId": self.taskID,
+                    @"pointId": point.ID,
+                    @"itemId" : @(point.item.ID),
+                    @"value": point.value ? : @"",
+                    @"status": point.errorChose ? @"UNNORMAL" : @"NORMAL",
+                    @"remark": point.remark ? : @"无异常",
+                    @"time": point.doneTime ? : (eqm.doneTime ? : @""),
+                    @"isReport" : point.isReport ? @"REPORT" : @"NOT_REPORT",
+                    @"equipmentStatus" : state,
+                    @"type":point.type,
+                    @"taskResultFiles":@[]
+                };
+                
+                [marr addObject:dic];
+                num ++;
+            }
+        }
+    }
+    
+    QMUIAlertController *alertController = [QMUIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"总巡检点 %ld",num] message:[NSString stringWithFormat:@"已巡检点 %ld 未巡检点 %ld 是否结束任务",marr.count,(num - marr.count)] preferredStyle:QMUIAlertControllerStyleAlert];
+    [alertController addAction:[QMUIAlertAction actionWithTitle:@"取消" style:QMUIAlertActionStyleCancel handler:nil]];
+    [alertController addAction:[QMUIAlertAction actionWithTitle:@"确定" style:QMUIAlertActionStyleDestructive handler:^(__kindof QMUIAlertController * _Nonnull aAlertController, QMUIAlertAction * _Nonnull action) {
+        
+        
+        NSError *error = nil;
+        NSString *createJSON = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:marr options:NSJSONWritingPrettyPrinted error:&error] encoding:NSUTF8StringEncoding];
+        NSDictionary *params = @{@"data": createJSON};
+        
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.requestSerializer = [AFJSONRequestSerializer serializer];
+        [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+        
+        [manager POST:TaskDone parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSLog(@"respon %@",responseObject);
+            [QMUITips showSucceed:@"提交成功"];
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse*)task.response;
+            NSDictionary *dict = httpURLResponse.allHeaderFields;
+            
+            NSLog(@"%@",dict[@"message"]);
+        }];
+        
+    }]];
+    [alertController showWithAnimated:YES];
     
 }
 - (void)loadDate {
@@ -75,8 +127,10 @@
                 XJModel *m = [XJModel modelWithDictionary:dic];
                 NSMutableArray *marr = [NSMutableArray array];
                 for (EqModel *model in m.equipments) {
+                    model.state = @"运行";
                     [marr addObject:model];
                     for (PointModel *point in model.points) {
+                        point.state = @"运行";
                         [marr addObject:point];
                     }
                 }
@@ -105,10 +159,8 @@
     
     SectionSimple *view = [[[NSBundle mainBundle] loadNibNamed:@"SectionSimple" owner:self options:nil]firstObject];
     view.SectionTitle.text = model.name;
-    [view.DoneBtn addTapBlock:^(UIButton *btn) {
-        model.finish = !model.finish;
-        btn.selected = model.finish;
-    }];
+    view.DoneBtn.selected = model.finish;
+   
     view.userInteractionEnabled = YES;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithActionBlock:^(id  _Nonnull sender) {
         model.show = !model.show;
@@ -160,29 +212,48 @@
             cell.menu.optionLineColor       = [UIColor whiteColor];
         }
         
-        EqModel *model = obj;
         
+        EqModel *model = obj;
+        [cell.menu setChoseBlock:^(NSString * _Nonnull title) {
+            model.state = title;
+            for (PointModel *tmp in model.points) {
+                tmp.state = title;
+            }
+            [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+        
+        cell.menu.title = model.state;
         cell.name.text = model.name;
         //是否展示子cell
 //        cell.arrowBtn.selected = model.show;
+        
+        
         //按钮正常 是否勾选
-        cell.choseBtn.selected = model.normal;
         cell.normalBtn.selected = model.normal;
+        
+        
+        
+        
         
         [cell.normalBtn addTapBlock:^(UIButton *btn) {
             btn.selected = !btn.selected;
-            model.normal = btn.selected;
             //按钮正常 是否勾选
-//            cell.choseBtn.selected = btn.selected;
-//            cell.normalBtn.selected = btn.selected;
-            model.haveDone = btn.selected;
+            model.normal = btn.selected;
+//            model.haveDone = btn.selected;
             for (PointModel *tpm in model.points) {
-                tpm.haveDone = YES;
-                tpm.normal = YES;
+                tpm.normal = btn.selected;
             }
             
             [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
+        if (model.normal || [model.state isEqualToString:@"检修"]) {
+            //如果全选正常 3级全完成
+            cell.choseBtn.selected = YES;
+        } else {
+            //3级点是否都操作了
+            cell.choseBtn.selected = model.haveDone;
+        }
+        
         return cell;
             
     }else{
@@ -193,8 +264,19 @@
         }
         PointModel *point = obj;
         cell.name.text = point.name;
+        
+        // 观察模式巡检点 展示正常 异常操作选择
         cell.coverWhite.hidden = [point.type isEqualToString:@"OBSERVE"];
-
+        
+        // 运行状态 展示正常 异常操作选择
+        cell.coverWhite.hidden = ![point.state isEqualToString:@"检修"];
+        
+        if ([point.state isEqualToString:@"检修"]) {
+            cell.name.textColor = [UIColor lightGrayColor];
+        }else {
+            cell.name.textColor = [UIColor darkGrayColor];
+        }
+        
         cell.choseBtn.selected = point.haveDone;
         cell.normalBtn.selected = point.normal;
         cell.erorBtn.selected = point.normal;
@@ -207,6 +289,10 @@
             cell.normalBtn.selected = point.normalChose;
             cell.erorBtn.selected = point.errorChose;
         }
+        
+        if ([point.state isEqualToString:@"检修"]) {
+            cell.choseBtn.selected = YES;
+        }
         [cell.normalBtn addTapBlock:^(UIButton *btn) {
             cell.choseBtn.selected = YES;
             
@@ -215,6 +301,28 @@
             
             btn.selected = !btn.selected;
             point.normalChose = btn.selected;
+            
+            point.doneTime = [self nowTimeStr];
+            
+            point.haveDone = YES;
+            
+            for (id tmp in marr) {
+                if ([tmp isKindOfClass:[EqModel class]]) {
+                    BOOL threeDone = YES;
+                    EqModel *model = tmp;
+                    BOOL oldTwoDone = model.haveDone;
+                    for (PointModel *point in model.points) {
+                        if (!point.haveDone) {
+                            threeDone = NO;
+                        }
+                    }
+                    model.haveDone = threeDone;
+                    if (threeDone != oldTwoDone) {
+                        //二级完成圈点状态改变则刷新
+                        [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
+                    }
+                }
+            }
         }];
         [cell.erorBtn addTapBlock:^(UIButton *btn) {
             cell.choseBtn.selected = YES;
@@ -224,6 +332,37 @@
             
             btn.selected = !btn.selected;
             point.errorChose = btn.selected;
+            
+            point.doneTime = [self nowTimeStr];
+            
+            point.haveDone = YES;
+            
+            for (id tmp in marr) {
+                if ([tmp isKindOfClass:[EqModel class]]) {
+                    BOOL threeDone = YES;
+                    EqModel *model = tmp;
+                    BOOL oldTwoDone = model.haveDone;
+                    for (PointModel *point in model.points) {
+                        if (!point.haveDone) {
+                            threeDone = NO;
+                        }
+                    }
+                    model.haveDone = threeDone;
+                    
+                    BOOL twoDone = YES;
+                    for (EqModel *tmp in xjmodel.equipments) {
+                        if (!tmp.haveDone) {
+                            twoDone = NO;
+                        }
+                    }
+                    xjmodel.finish = twoDone;
+                    
+                    if (threeDone != oldTwoDone) {
+                        //二级完成圈点状态改变则刷新
+                        [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
+                    }
+                }
+            }
         }];
         
         return cell;
@@ -275,6 +414,24 @@
 }
 
 
+-(NSString *)nowTimeStr{
+    NSDateFormatter *df = [[NSDateFormatter alloc]init];
+    df.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    df.timeZone = [NSTimeZone systemTimeZone];//系统所在时区
+    NSDate *now = [NSDate date];
+    NSString *systemTimeZoneStr =  [df stringFromDate:now];
+    
+    return [systemTimeZoneStr stringByReplacingOccurrencesOfString:@" " withString:@"T"];
+}
+- (NSString *)stateEnglish:(NSString *)state {
+    if ([state isEqualToString:@"运行"]) {
+        return @"RUNNING";
+    } else if ([state isEqualToString:@"备用"]) {
+    return @"STANDBY";
+    } else {
+        return @"OVERHAUL";
+    }
+}
 /*
 #pragma mark - Navigation
 
