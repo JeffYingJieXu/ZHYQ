@@ -103,15 +103,20 @@
             NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,StrFromDict(dic, @"id")];
             [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 XunJianDetailVC *vc = XunJianDetailVC.new;
-                vc.taskID = StrFromDict(namedic, @"id");
+                vc.taskID = StrFromDict(dic, @"id");
                 if (namedic) {
                     vc.title = StrFromDict(namedic, @"name");
+                    vc.taskTemplateID = StrFromDict(namedic, @"id");
                 }
                 [self.navigationController pushViewController:vc animated:YES];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse*)task.response;
                 NSDictionary *dict = httpURLResponse.allHeaderFields;
                 
+                if (dict[@"message"]) {
+                    NSString *tip = [self URLDecodedString:dict[@"message"]];
+                    [QMUITips showInfo:tip];
+                }
                 NSLog(@"%@",dict[@"message"]);
             }];
             
@@ -119,15 +124,23 @@
         [alertController showWithAnimated:YES];
     } else {
         XunJianDetailVC *vc = XunJianDetailVC.new;
-        vc.taskID = StrFromDict(namedic, @"id");
+        vc.taskID = StrFromDict(dic, @"id");
         if (namedic) {
             vc.title = StrFromDict(namedic, @"name");
+            vc.taskTemplateID = StrFromDict(namedic, @"id");
         }
         [self.navigationController pushViewController:vc animated:YES];
     }
       
 }
 
+
+-(NSString *)URLDecodedString:(NSString *)str
+{
+    NSString *decodedString=(__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)str, CFSTR(""), CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+    
+    return decodedString;
+}
 /*
 #pragma mark - Navigation
 

@@ -104,7 +104,9 @@ NSString * AFPercentEscapedStringFromString(NSString *string) {
 - (NSString *)URLEncodedStringValue {
     if (!self.value || [self.value isEqual:[NSNull null]]) {
         return AFPercentEscapedStringFromString([self.field description]);
-    } else {
+    }else if(!self.field || [self.field isEqual:[NSNull null]]){
+        return [NSString stringWithFormat:@"%@",self.value];
+    }else {
         return [NSString stringWithFormat:@"%@=%@", AFPercentEscapedStringFromString([self.field description]), AFPercentEscapedStringFromString([self.value description])];
     }
 }

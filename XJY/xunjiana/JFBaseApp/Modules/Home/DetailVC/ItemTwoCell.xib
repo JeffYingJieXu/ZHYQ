@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQN-pY-0l8">
-                        <rect key="frame" x="54" y="138.5" width="20" height="20"/>
+                        <rect key="frame" x="54" y="127.5" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="PYY-Uk-n3a"/>
                             <constraint firstAttribute="width" constant="20" id="pmk-Rk-lfu"/>
@@ -70,10 +70,10 @@
                         <state key="selected" image="xjgr.png"/>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eKi-Ha-b1F">
-                        <rect key="frame" x="63" y="112.5" width="2" height="26"/>
+                        <rect key="frame" x="63" y="107.5" width="2" height="20"/>
                         <color key="backgroundColor" red="0.92941176469999998" green="0.43529411759999997" blue="0.12941176469999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="26" id="Pb4-BU-xSe"/>
+                            <constraint firstAttribute="height" constant="20" id="Pb4-BU-xSe"/>
                             <constraint firstAttribute="width" constant="2" id="s6p-Se-9a1"/>
                         </constraints>
                     </view>
@@ -101,7 +101,7 @@
                     <constraint firstItem="HQN-pY-0l8" firstAttribute="centerX" secondItem="eKi-Ha-b1F" secondAttribute="centerX" id="dzY-YZ-sXA"/>
                     <constraint firstItem="Wzd-bn-eMC" firstAttribute="centerY" secondItem="jue-Kf-0NU" secondAttribute="centerY" id="eaw-Js-pDs"/>
                     <constraint firstItem="HQN-pY-0l8" firstAttribute="top" secondItem="eKi-Ha-b1F" secondAttribute="bottom" id="f3p-eO-j0Y"/>
-                    <constraint firstItem="HQN-pY-0l8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="14" id="gU7-En-4pj"/>
+                    <constraint firstItem="HQN-pY-0l8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" constant="3" id="gU7-En-4pj"/>
                     <constraint firstItem="cYM-JR-LAc" firstAttribute="leading" secondItem="jue-Kf-0NU" secondAttribute="leading" id="tvh-a8-baG"/>
                     <constraint firstItem="nzN-au-7nP" firstAttribute="leading" secondItem="Wzd-bn-eMC" secondAttribute="trailing" id="xIM-bf-ysi"/>
                 </constraints>

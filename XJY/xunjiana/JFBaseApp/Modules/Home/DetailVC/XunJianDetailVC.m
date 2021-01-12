@@ -63,6 +63,7 @@
         for (EqModel *eqm in xjm.equipments) {
             for (PointModel *point in eqm.points) {
                 NSString *state = [self stateEnglish:point.state];
+                NSString *nowtime = [self nowTimeStr];
                 NSDictionary *dic = @{
                     @"taskId": self.taskID,
                     @"pointId": point.ID,
@@ -70,7 +71,7 @@
                     @"value": point.value ? : @"",
                     @"status": point.errorChose ? @"UNNORMAL" : @"NORMAL",
                     @"remark": point.remark ? : @"无异常",
-                    @"time": point.doneTime ? : (eqm.doneTime ? : @""),
+                    @"time": point.doneTime ? : (eqm.doneTime ? : nowtime),
                     @"isReport" : point.isReport ? @"REPORT" : @"NOT_REPORT",
                     @"equipmentStatus" : state,
                     @"type":point.type,
@@ -78,26 +79,47 @@
                 };
                 
                 [marr addObject:dic];
-                num ++;
+                if (point.haveDone) {
+                    num ++;
+                }
             }
         }
     }
     
-    QMUIAlertController *alertController = [QMUIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"总巡检点 %ld",num] message:[NSString stringWithFormat:@"已巡检点 %ld 未巡检点 %ld 是否结束任务",marr.count,(num - marr.count)] preferredStyle:QMUIAlertControllerStyleAlert];
+    QMUIAlertController *alertController = [QMUIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"总巡检点 %ld",marr.count] message:[NSString stringWithFormat:@"已巡检点 %ld 未巡检点 %ld 是否结束任务",num,(marr.count - num)] preferredStyle:QMUIAlertControllerStyleAlert];
     [alertController addAction:[QMUIAlertAction actionWithTitle:@"取消" style:QMUIAlertActionStyleCancel handler:nil]];
     [alertController addAction:[QMUIAlertAction actionWithTitle:@"确定" style:QMUIAlertActionStyleDestructive handler:^(__kindof QMUIAlertController * _Nonnull aAlertController, QMUIAlertAction * _Nonnull action) {
         
         
         NSError *error = nil;
         NSString *createJSON = [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:marr options:NSJSONWritingPrettyPrinted error:&error] encoding:NSUTF8StringEncoding];
-        NSDictionary *params = @{@"data": createJSON};
+        NSMutableString *mstr = [NSMutableString stringWithString:createJSON];
+        NSRange range = {0,createJSON.length};
+        [mstr replaceOccurrencesOfString:@" " withString:@"" options:NSLiteralSearch range:range];
+        NSRange range2 = {0,mstr.length};
+        [mstr replaceOccurrencesOfString:@"\n" withString:@"" options:NSLiteralSearch range:range2];
+        NSRange range3 = {0,mstr.length};
+        [mstr replaceOccurrencesOfString:@"\\" withString:@"" options:NSLiteralSearch range:range3];
+        
+//        NSRange range4 = {0,mstr.length};
+//        [mstr replaceOccurrencesOfString:@"\\" withString:@"" options:NSLiteralSearch range:range4];
+        
+        
+        [self commitRequest:mstr];
+        return;
+        
         
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [AFJSONRequestSerializer serializer];
         [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
         
-        [manager POST:TaskDone parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"respon %@",responseObject);
+        [manager POST:TaskDone parameters:@{@"results":mstr} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSHTTPURLResponse *httpURLResponse = (NSHTTPURLResponse*)task.response;
+            NSDictionary *dict = httpURLResponse.allHeaderFields;
+            
+            NSLog(@"%@",dict[@"message"]);
+            
+            
             [QMUITips showSucceed:@"提交成功"];
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -111,6 +133,45 @@
     [alertController showWithAnimated:YES];
     
 }
+
+- (void)commitRequest:(NSString *)jsonArr {
+    //创建URL对象
+    NSURL *url =[NSURL URLWithString:TaskDone];
+    //创建请求对象
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setHTTPMethod:@"post"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request setValue:LatestToken forHTTPHeaderField:@"Authorization"];
+    
+    NSData *jsonArrData = [jsonArr dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:jsonArrData];
+        
+    // 3 建立会话 session支持三种类型的任务
+    
+    //    NSURLSessionDataTask  //加载数据
+    //    NSURLSessionDownloadTask  //下载
+    //    NSURLSessionUploadTask   //上传
+    NSURLSession *session =[NSURLSession sharedSession];
+//    NSLog(@"%d",[[NSThread currentThread] isMainThread]);
+    
+    __weak typeof(self)weakSelf = self;
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        //解析
+        NSDictionary *dic =[NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        
+        NSLog(@"%@",dic);
+//        NSLog(@"%d----",[[NSThread currentThread] isMainThread]);
+        //回到主线程 刷新数据 要是刷新就在这里面
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [QMUITips showSucceed:@"提交成功"];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        });
+    }];
+    //启动任务
+    [dataTask resume];
+}
+
 - (void)loadDate {
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -118,7 +179,7 @@
     //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
     [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
     NSString *urlName = TaskList;
-    NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,self.taskID];
+    NSString *url = [NSString stringWithFormat:@"%@/%@",urlName,self.taskTemplateID];
     NSLog(@"%@",url);
     [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject[@"areas"] isKindOfClass:[NSArray class]]) {
@@ -231,10 +292,6 @@
         //按钮正常 是否勾选
         cell.normalBtn.selected = model.normal;
         
-        
-        
-        
-        
         [cell.normalBtn addTapBlock:^(UIButton *btn) {
             btn.selected = !btn.selected;
             //按钮正常 是否勾选
@@ -249,6 +306,9 @@
         if (model.normal || [model.state isEqualToString:@"检修"]) {
             //如果全选正常 3级全完成
             cell.choseBtn.selected = YES;
+            for (PointModel *tpm in model.points) {
+                tpm.haveDone = YES;
+            }
         } else {
             //3级点是否都操作了
             cell.choseBtn.selected = model.haveDone;
@@ -385,11 +445,24 @@
         vc.title = @"测项详情";
         vc.name = point.item.name;
         vc.standard = point.item.standard;
-//        vc.normal = ;
-//        vc.xiu = ;
-//        vc.remark = ;
-        [vc setSomeBlock:^(BOOL normal, BOOL xiu, NSString * _Nonnull remark) {
-            
+        vc.normal = !point.errorChose;
+        vc.xiu = point.isReport;
+        vc.remark = point.remark;
+//        if ([point.type isEqualToString:@"MEASURE"]) {
+            vc.testPoint = YES;
+            vc.unit = point.item.unit;
+            if (point.value) {
+                vc.value = point.value;
+            }
+//        }
+        [vc setSomeBlock:^(BOOL normal, BOOL xiu, NSString * _Nonnull testNum, NSString * _Nonnull remark) {
+            point.normalChose = normal;
+            point.errorChose = !normal;
+            point.isReport = xiu;
+            point.value = testNum;
+            point.remark = remark;
+            point.haveDone = YES;
+            [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
         [self.navigationController pushViewController:vc animated:YES];
     }
