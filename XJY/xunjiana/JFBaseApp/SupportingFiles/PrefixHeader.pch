@@ -70,5 +70,7 @@
 #import <QMUIKit/QMUIKit.h>
 #import <IQKeyboardManager/IQKeyboardManager.h>
 
+//小工具
+#import "JMWhenTapped.h"
 #endif /* PrefixHeader_pch */
 

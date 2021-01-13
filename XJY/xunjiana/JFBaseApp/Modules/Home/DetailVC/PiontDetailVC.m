@@ -7,6 +7,8 @@
 //
 
 #import "PiontDetailVC.h"
+#import "AddPicScroll.h"
+
 
 @interface PiontDetailVC ()
 @property (nonatomic,strong) UISwitch *sw;
@@ -128,7 +130,7 @@
     lab3.text = @"备注：";
     [self.view addSubview:lab3];
     
-    UITextView *textv = [[UITextView alloc] initWithFrame:CGRectMake(20, 210, KScreenWidth-40, 200)];
+    UITextView *textv = [[UITextView alloc] initWithFrame:CGRectMake(20, 210, KScreenWidth-40, 100)];
     textv.font = SYSTEMFONT(14);
     [self.view addSubview:textv];
     self.txtView = textv;
@@ -147,6 +149,10 @@
     }];
     [button setTitle:@"保存" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(saveClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    AddPicScroll *scrol = [[AddPicScroll alloc] initWithFrame:CGRectMake(10, 330, KScreenWidth-20, KScreenWidth*0.25-5)];
+    [self.view addSubview:scrol];
+    
     
 }
 - (void)saveClick {
