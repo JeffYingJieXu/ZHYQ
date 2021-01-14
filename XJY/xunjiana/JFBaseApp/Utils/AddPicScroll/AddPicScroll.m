@@ -24,7 +24,7 @@
     if (self) {
         CGFloat w = frame.size.width/4;
         _picW = w;
-        UIImageView *addv = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, w, w)];
+        UIImageView *addv = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, w-30, w-30)];
         addv.image = [UIImage imageNamed:@"uploadpic"];
         [self addSubview:addv];
         [addv whenTapped:^{
@@ -49,6 +49,38 @@
     return _chosePicURLs;
 }
 
+- (void)setPicsObj:(NSArray *)picsObj {
+    _picsObj = picsObj;
+    
+    [self removeAllSubviews];
+    for (int i=0; i<picsObj.count; i++) {
+        
+        AddPicView *addv = [[AddPicView alloc] initWithFrame:CGRectMake(_picW*i, 0, _picW, _picW)];
+        [self addSubview:addv];
+//        addv.imgv.image = _chosePics[i];
+        [addv.imgv sd_setImageWithURL:[NSURL URLWithString:[picsObj[i] valueForKey:@"path"]] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            [self.chosePics addObject:image];
+        }];
+        [addv whenTapped:^{
+            [AvatarBrowser showImage:addv.imgv];
+        }];
+        [addv.deleteV whenTapped:^{
+            [self deletePicWith:i];
+        }];
+    }
+    UIImageView *addv = [[UIImageView alloc] initWithFrame:CGRectMake(_picW*picsObj.count+15, 15, _picW-30, _picW-30)];
+    addv.image = [UIImage imageNamed:@"uploadpic"];
+    [self addSubview:addv];
+    [addv whenTapped:^{
+       [self addPictures];
+    }];
+    
+    self.contentSize = CGSizeMake(_picW*picsObj.count+_picW, _picW);
+
+    [self layoutIfNeeded];
+    
+}
+
 - (void)refreshScroll{
     
     [self removeAllSubviews];
@@ -64,7 +96,7 @@
             [self deletePicWith:i];
         }];
     }
-    UIImageView *addv = [[UIImageView alloc] initWithFrame:CGRectMake(_picW*_chosePics.count, 0, _picW, _picW)];
+    UIImageView *addv = [[UIImageView alloc] initWithFrame:CGRectMake(_picW*_chosePics.count+15, 15, _picW-30, _picW-30)];
     addv.image = [UIImage imageNamed:@"uploadpic"];
     [self addSubview:addv];
     [addv whenTapped:^{
@@ -75,7 +107,7 @@
 
     [self layoutIfNeeded];
     
-    if (self.picUrlsBlock) {
+    if (self.picUrlsBlock && _chosePicURLs.count>0) {
         self.picUrlsBlock(_chosePicURLs);
     }
     
@@ -108,20 +140,54 @@
             return;
         }
 //        UIImage *imga = photos[0];
-        
-        
-        
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (NSInteger i=0;i<photos.count;i++) {
+         
+        [PPNetworkHelper uploadImagesWithURL:@"http://10.100.40.89:30001/system/dfs/uploadFile" parameters:@{@"bucketName":@"smartxmd"} name:@"filePic" images:@[photos[i]] fileNames:@[[NSString stringWithFormat:@"pic%ld",i]] imageScale:0.5 imageType:@"png" progress:^(NSProgress *progress) {
             
-//            [weakSelf.chosePicURLs addObject:imgName];
-//            [weakSelf.chosePics addObject: imga];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshScroll];
-            });
-            
-        });
+        } success:^(id responseObject) {
+            NSDictionary *dic = [self dictionaryForJsonData:responseObject];;
+            if (dic && [dic valueForKey:@"data"]) {
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                    
+                    [weakSelf.chosePicURLs addObject:[dic valueForKey:@"data"]];
+                    [weakSelf.chosePics addObject: photos[i]];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self refreshScroll];
+                    });
+                    
+                });
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"%@",[error localizedDescription]);
+        }];
+        
+        
+        }
+        
+        
     }];
+}
+
+- (NSDictionary *)dictionaryForJsonData:(NSData *)jsonData
+
+{
+
+    if (![jsonData isKindOfClass:[NSData class]] || jsonData.length < 1) {
+
+        return nil;
+
+    }
+
+    id jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:nil];
+
+    if (![jsonObj isKindOfClass:[NSDictionary class]]) {
+
+        return nil;
+
+    }
+
+    return [NSDictionary dictionaryWithDictionary:(NSDictionary *)jsonObj];
+
 }
 
 /*

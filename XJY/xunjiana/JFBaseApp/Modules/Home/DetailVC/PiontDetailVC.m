@@ -22,6 +22,7 @@
 @property (nonatomic,strong) UILabel *testLabel,*danweiLabel;
 @property (nonatomic,strong) UITextField *testNum;
 
+@property (nonatomic,strong) AddPicScroll *scrol;
 @end
 
 @implementation PiontDetailVC
@@ -54,6 +55,8 @@
 //        self.testNum.hidden = YES;
 //        self.danweiLabel.hidden = YES;
 //    }
+    self.scrol.picsObj = self.picsObjArr;
+    
 }
 
 -(void)createUI{
@@ -151,13 +154,22 @@
     [button addTarget:self action:@selector(saveClick) forControlEvents:UIControlEventTouchUpInside];
     
     AddPicScroll *scrol = [[AddPicScroll alloc] initWithFrame:CGRectMake(10, 330, KScreenWidth-20, KScreenWidth*0.25-5)];
+    scrol.maxPics = 9;
+    [scrol setPicUrlsBlock:^(NSArray * _Nonnull picUrls) {
+        NSLog(@"%@",picUrls[0]);
+        NSMutableArray *urlMarr = [NSMutableArray array];
+        for (NSString *url in picUrls) {
+            [urlMarr addObject:@{@"path":url}];
+        }
+        self.picsObjArr = [urlMarr copy];
+    }];
     [self.view addSubview:scrol];
-    
+    self.scrol = scrol;
     
 }
 - (void)saveClick {
     if (self.someBlock) {
-        self.someBlock(!self.sw.on, self.sw2.on, self.testNum.text, self.txtView.text);
+        self.someBlock(!self.sw.on, self.sw2.on, self.testNum.text, self.txtView.text ,self.picsObjArr);
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

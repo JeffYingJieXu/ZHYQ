@@ -88,6 +88,8 @@
 //结束任务
 #define TaskDone [NSString stringWithFormat:@"%@/%@",URL_main,@"task-results/saveBatch"]
 
+//上传文件  图片
+#define UploadPic [NSString stringWithFormat:@"%@/%@",URL_main,@"dfs/uploadFile"]
 
 
 #endif /* URLMacros_h */

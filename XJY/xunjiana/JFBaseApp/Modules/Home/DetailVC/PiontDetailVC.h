@@ -14,8 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign)BOOL normal,xiu,testPoint;
 @property(nonatomic,copy) NSString *remark,*name,*standard,*value,*unit;
-
-@property (nonatomic, copy) void(^someBlock)(BOOL normal,BOOL xiu, NSString *testNum, NSString *remark);
+@property(nonatomic,strong) NSArray *picsObjArr;
+@property (nonatomic, copy) void(^someBlock)(BOOL normal,BOOL xiu, NSString *testNum, NSString *remark, NSArray *picsObj);
 
 @end
 

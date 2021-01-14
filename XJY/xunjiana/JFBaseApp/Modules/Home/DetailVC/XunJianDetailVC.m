@@ -75,7 +75,7 @@
                     @"isReport" : point.isReport ? @"REPORT" : @"NOT_REPORT",
                     @"equipmentStatus" : state,
                     @"type":point.type,
-                    @"taskResultFiles":@[]
+                    @"taskResultFiles": point.picsObj ? : @[]
                 };
                 
                 [marr addObject:dic];
@@ -192,6 +192,7 @@
                     [marr addObject:model];
                     for (PointModel *point in model.points) {
                         point.state = @"运行";
+                        point.picsObj = @[];
                         [marr addObject:point];
                     }
                 }
@@ -448,6 +449,7 @@
         vc.normal = !point.errorChose;
         vc.xiu = point.isReport;
         vc.remark = point.remark;
+        vc.picsObjArr = point.picsObj;
 //        if ([point.type isEqualToString:@"MEASURE"]) {
             vc.testPoint = YES;
             vc.unit = point.item.unit;
@@ -455,13 +457,14 @@
                 vc.value = point.value;
             }
 //        }
-        [vc setSomeBlock:^(BOOL normal, BOOL xiu, NSString * _Nonnull testNum, NSString * _Nonnull remark) {
+        [vc setSomeBlock:^(BOOL normal, BOOL xiu, NSString * _Nonnull testNum, NSString * _Nonnull remark, NSArray *picsObj) {
             point.normalChose = normal;
             point.errorChose = !normal;
             point.isReport = xiu;
             point.value = testNum;
             point.remark = remark;
             point.haveDone = YES;
+            point.picsObj = picsObj;
             [self.tableView reloadSection:indexPath.section withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
         [self.navigationController pushViewController:vc animated:YES];

@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) NSString *remark; //备注
 @property (nonatomic,copy) NSString *doneTime; //操作时间
 @property (nonatomic,assign) BOOL isReport;
-
+@property (nonatomic,strong) NSArray *picsObj;
 
 @property (nonatomic,assign) NSString *state;//用作比对
 /// 正常 or 异常

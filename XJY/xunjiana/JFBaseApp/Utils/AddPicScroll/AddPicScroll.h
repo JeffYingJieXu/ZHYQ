@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AddPicScroll : UIScrollView
 
+@property (nonatomic,strong) NSArray *picsObj;
 @property (nonatomic,assign) int maxPics;
 @property (copy, nonatomic) void(^picUrlsBlock)(NSArray *picUrls);
 
