@@ -11,25 +11,36 @@
 #import "LMJDropdownMenu.h"
 #import "MainTabBarController.h"
 #import "AppDelegate+Service.h"
-@interface LoginVC () <LMJDropdownMenuDataSource,LMJDropdownMenuDelegate>
+#import "CZPickerView.h"
+
+@interface LoginVC () <LMJDropdownMenuDataSource,LMJDropdownMenuDelegate,CZPickerViewDelegate,CZPickerViewDataSource>
 @property (nonatomic,strong)QMUITextField * keyfield;
 @property (nonatomic,copy)NSString *loginID;
 @property (nonatomic,copy)NSString *loginName;
+@property (nonatomic,strong)LMJDropdownMenu *menuLabel;
+@property (nonatomic,strong) UIButton *choseObj;
 @end
 
 @implementation LoginVC
 {
     NSArray * _menu1OptionTitles;
     LMJDropdownMenu * menu1;
+    NSArray *choseArr;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = CViewBgColor;
     
+    /*
+   城南热电: 124.70.162.99:30080
+   津西钢铁: 124.70.162.99:30081
+   日照钢铁: 124.70.162.99:30082
+   */
+    choseArr = @[@{@"name":@"城南",@"url":@"http://124.70.162.99:30080"},@{@"name":@"津西",@"url":@"http://124.70.162.99:30081"},@{@"name":@"日照",@"url":@"http://124.70.162.99:30082"}];
+           
     _menu1OptionTitles = @[];
     [self buildUI];
-    [self loadData];
 }
 - (void)buildUI {
 
@@ -37,7 +48,7 @@
     [menu1 setFrame:CGRectMake(0, 0, 150, 40)];
     menu1.dataSource = self;
     menu1.delegate   = self;
-    
+    self.menuLabel = menu1;
     [self.view addSubview:menu1];
     [menu1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.mas_equalTo(self.view).offset(10);
@@ -129,12 +140,29 @@
         make.bottom.mas_equalTo(menu1.mas_top);
     }];
     
-    UIImageView *logo = [UIImageView new];
-    logo.image = [UIImage imageNamed:@"logoHD"];
-    [holdview addSubview:logo];
-    [logo mas_makeConstraints:^(MASConstraintMaker *make) {
+//    UIImageView *logo = [UIImageView new];
+//    logo.image = [UIImage imageNamed:@"logoHD"];
+//    [holdview addSubview:logo];
+//    [logo mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.center.mas_equalTo(holdview);
+//    }];
+    
+    
+    UIButton *obj = [UIButton buttonWithType:UIButtonTypeCustom];
+    [obj setTitleColor:CThemeColor forState:UIControlStateNormal];
+    obj.titleLabel.font = [UIFont boldSystemFontOfSize:25];
+    obj.titleLabel.textAlignment = NSTextAlignmentCenter;
+//    obj.titleLabel.text = @"请点击选择项目";
+    [obj setTitle:@"请点击选择项目" forState:UIControlStateNormal];
+    [holdview addSubview:obj];
+    [obj mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.mas_equalTo(holdview);
     }];
+    self.choseObj = obj;
+    
+    [obj addTarget:self action:@selector(objectChose) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     
     UILabel *tip = [[UILabel alloc] initWithFrame:CGRectMake(0, KScreenHeight-50, KScreenWidth, 50)];
     tip.textAlignment = NSTextAlignmentCenter;
@@ -155,13 +183,48 @@
 //        self.phoneboard.text = oldaccount;
 //    }
 }
+- (void)objectChose {
+ 
+    CZPickerView *picker = [[CZPickerView alloc] initWithHeaderTitle:@"项目选择" cancelButtonTitle:@"自定义" confirmButtonTitle:@"确定"];
+    picker.headerTitleFont = [UIFont systemFontOfSize: 20];
+    picker.delegate = self;
+    picker.dataSource = self;
+    picker.needFooterView = NO;
+    picker.headerBackgroundColor = [UIColor qmui_colorWithHexString:@"f4f4f7"];
+    picker.headerTitleColor = [UIColor qmui_colorWithHexString:@"373940"];
+    picker.headerTitleFont = UIFontMake(16);
 
+    [picker showInView:self.view];
+}
+#pragma mark --- CZPickerDelegate datasource
+- (NSInteger)numberOfRowsInPickerView:(CZPickerView *)pickerView
+{
+    return choseArr.count;
+}
+- (NSString *)czpickerView:(CZPickerView *)pickerView titleForRow:(NSInteger)row
+{
+    return [choseArr[row] objectForKey:@"name"];
+}
+- (void)czpickerView:(CZPickerView *)pickerView
+didConfirmWithItemAtRow:(NSInteger)row {
+//    self.choseObj.titleLabel.text = [choseArr[row] objectForKey:@"name"];
+    [self.choseObj setTitle:[choseArr[row] objectForKey:@"name"] forState:UIControlStateNormal];
+    NSString *url = [choseArr[row] objectForKey:@"url"];
+    SaveApi(url);
+    self.loginID = nil;
+    self.loginName = nil;
+    self.menuLabel.title = @"";
+    self.keyfield.text = @"";
+    [self loadData];
+}
 - (void)loadData{
-    NSLog(@"%@",Login_people);
-    
+   
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
 //    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
 //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
+//    NSString *url = [NSString stringWithFormat:@"%@/%@",NewApi,Login_people];
+//    NSLog(@"%@",url);
+       
     [manager GET:Login_people parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 //        NSLog(@"%@",responseObject);
         _menu1OptionTitles = responseObject;

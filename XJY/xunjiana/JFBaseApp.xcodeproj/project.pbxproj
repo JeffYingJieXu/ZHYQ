@@ -88,6 +88,7 @@
 		46838B8A256CE7B000284B5B /* mineH@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46838B84256CE7B000284B5B /* mineH@2x.png */; };
 		46838B8B256CE7B000284B5B /* searchN@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46838B85256CE7B000284B5B /* searchN@2x.png */; };
 		4689F6E4257DC52900D766CA /* PiontDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4689F6E3257DC52900D766CA /* PiontDetailVC.m */; };
+		4696A94A25B8240600D670EE /* CZPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4696A94625B8240600D670EE /* CZPickerView.m */; };
 		469A8E6B24EE4B5800CF7C77 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 469A8E4724EE4B5800CF7C77 /* LICENSE */; };
 		469A8E6C24EE4B5800CF7C77 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 469A8E4824EE4B5800CF7C77 /* README.md */; };
 		469A8E6D24EE4B5800CF7C77 /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 469A8E4A24EE4B5800CF7C77 /* UIProgressView+AFNetworking.m */; };
@@ -335,6 +336,8 @@
 		46838B85256CE7B000284B5B /* searchN@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchN@2x.png"; sourceTree = "<group>"; };
 		4689F6E2257DC52900D766CA /* PiontDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PiontDetailVC.h; sourceTree = "<group>"; };
 		4689F6E3257DC52900D766CA /* PiontDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PiontDetailVC.m; sourceTree = "<group>"; };
+		4696A94625B8240600D670EE /* CZPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZPickerView.m; sourceTree = "<group>"; };
+		4696A94925B8240600D670EE /* CZPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPickerView.h; sourceTree = "<group>"; };
 		469A8E4724EE4B5800CF7C77 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		469A8E4824EE4B5800CF7C77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		469A8E4A24EE4B5800CF7C77 /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
@@ -876,6 +879,15 @@
 			path = LMJDropdownMenu;
 			sourceTree = "<group>";
 		};
+		4696A94525B8240600D670EE /* JFMultiAlertChoose */ = {
+			isa = PBXGroup;
+			children = (
+				4696A94925B8240600D670EE /* CZPickerView.h */,
+				4696A94625B8240600D670EE /* CZPickerView.m */,
+			);
+			path = JFMultiAlertChoose;
+			sourceTree = "<group>";
+		};
 		469A8E4624EE4B5800CF7C77 /* AFNetworking */ = {
 			isa = PBXGroup;
 			children = (
@@ -1070,6 +1082,7 @@
 		46A16470226824F900C37236 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				4696A94525B8240600D670EE /* JFMultiAlertChoose */,
 				463B22D025AED54C008C16C1 /* JMWhenTapped */,
 				463B227F25AEC906008C16C1 /* SuPhotoPicker */,
 				463B227425AEC3D9008C16C1 /* AddPicScroll */,
@@ -1582,6 +1595,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4696A94A25B8240600D670EE /* CZPickerView.m in Sources */,
 				46A16549226860CE00C37236 /* AppDelegate+Service.m in Sources */,
 				46523AAE22CA462E001A6EF0 /* MainTabBarController.m in Sources */,
 				46A164B2226824F900C37236 /* TagsButton.m in Sources */,
@@ -1838,6 +1852,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_TEAM = NTX526NF4D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1872,6 +1887,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1.3;
 				DEVELOPMENT_TEAM = NTX526NF4D;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

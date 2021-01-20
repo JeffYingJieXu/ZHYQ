@@ -15,6 +15,7 @@
 @property (nonatomic,strong)NSMutableArray *chosePics;
 @property (nonatomic,strong)NSMutableArray *chosePicURLs;
 @property (nonatomic,assign) CGFloat picW;
+@property (nonatomic,assign) NSInteger startX;
 @end
 
 @implementation AddPicScroll
@@ -24,6 +25,7 @@
     if (self) {
         CGFloat w = frame.size.width/4;
         _picW = w;
+        _startX = 0;
         UIImageView *addv = [[UIImageView alloc] initWithFrame:CGRectMake(15, 15, w-30, w-30)];
         addv.image = [UIImage imageNamed:@"uploadpic"];
         [self addSubview:addv];
@@ -53,13 +55,23 @@
     _picsObj = picsObj;
     
     [self removeAllSubviews];
+    NSMutableArray *marr = [NSMutableArray array];
+  
     for (int i=0; i<picsObj.count; i++) {
         
         AddPicView *addv = [[AddPicView alloc] initWithFrame:CGRectMake(_picW*i, 0, _picW, _picW)];
         [self addSubview:addv];
+        
+        [marr addObject:addv.imgv];
+        [self.chosePicURLs addObject:[picsObj[i] valueForKey:@"path"]];
 //        addv.imgv.image = _chosePics[i];
         [addv.imgv sd_setImageWithURL:[NSURL URLWithString:[picsObj[i] valueForKey:@"path"]] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            [self.chosePics addObject:image];
+            _startX++;
+            if (_startX == picsObj.count) {
+                for (UIImageView *view in marr) {
+                    [self.chosePics addObject:view.image];
+                }
+            }
         }];
         [addv whenTapped:^{
             [AvatarBrowser showImage:addv.imgv];
@@ -78,6 +90,10 @@
     self.contentSize = CGSizeMake(_picW*picsObj.count+_picW, _picW);
 
     [self layoutIfNeeded];
+    
+    if (self.picUrlsBlock && _chosePicURLs.count>0) {
+        self.picUrlsBlock(_chosePicURLs);
+    }
     
 }
 
@@ -136,13 +152,15 @@
     [picker showInSender:vc handle:^(NSArray<UIImage *> *photos) {
         
         if ((photos.count + weakSelf.chosePicURLs.count) > weakSelf.maxPics) {
-            [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:@"最多上传%d张照片",weakSelf.maxPics]];
+            [MBProgressHUD showTipMessageInWindow:[NSString stringWithFormat:@"请每次最多上传%d张照片",weakSelf.maxPics]];
             return;
         }
 //        UIImage *imga = photos[0];
         for (NSInteger i=0;i<photos.count;i++) {
+            
+//            @"http://10.100.40.89:30001/system/dfs/uploadFile"
          
-        [PPNetworkHelper uploadImagesWithURL:@"http://10.100.40.89:30001/system/dfs/uploadFile" parameters:@{@"bucketName":@"smartxmd"} name:@"filePic" images:@[photos[i]] fileNames:@[[NSString stringWithFormat:@"pic%ld",i]] imageScale:0.5 imageType:@"png" progress:^(NSProgress *progress) {
+        [PPNetworkHelper uploadImagesWithURL:UploadPic parameters:@{@"bucketName":@"smartxmd"} name:@"filePic" images:@[photos[i]] fileNames:@[[NSString stringWithFormat:@"pic%ld",i]] imageScale:0.5 imageType:@"png" progress:^(NSProgress *progress) {
             
         } success:^(id responseObject) {
             NSDictionary *dic = [self dictionaryForJsonData:responseObject];;

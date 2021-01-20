@@ -21,9 +21,9 @@
  这样做切换方便,不用来回每个网络请求修改请求域名,降低出错事件
  */
 
-#define DevelopSever    1
+#define DevelopSever    0
 #define TestSever       0
-#define ProductSever    0
+#define ProductSever    1
 
 #if DevelopSever
 
@@ -39,10 +39,18 @@
 #elif ProductSever
 
 /**生产服务器*/
-#define URL_main @"http://120.195.38.107:38080"
+#define URL_main NewApi
 #endif
 
 
+/*
+城南热电: 124.70.162.99:30080
+津西钢铁: 124.70.162.99:30081
+日照钢铁: 124.70.162.99:30082
+*/
+//最新token
+#define NewApi [[NSUserDefaults standardUserDefaults] objectForKey:@"newapi"]
+#define SaveApi(obj) [[NSUserDefaults standardUserDefaults] setObject:obj forKey:@"newapi"]
 
 #pragma mark - ——————— 详细接口地址 ————————
 
@@ -50,18 +58,6 @@
 //NSString *const URL_Test = @"api/recharge/price/list";
 #define URL_Test @"/api/cast/home/start"
 
-
-#pragma mark - ——————— 用户相关 ————————
-//自动登录
-#define URL_user_auto_login @"/api/autoLogin"
-//登录
-#define URL_user_login @"/api/login"
-//用户详情
-#define URL_user_info_detail @"/api/user/info/detail"
-//修改头像
-#define URL_user_info_change_photo @"/api/user/info/changephoto"
-//注释
-#define URL_user_info_change @"/api/user/info/change"
 
 
 //人员列表
@@ -89,7 +85,7 @@
 #define TaskDone [NSString stringWithFormat:@"%@/%@",URL_main,@"task-results/saveBatch"]
 
 //上传文件  图片
-#define UploadPic [NSString stringWithFormat:@"%@/%@",URL_main,@"dfs/uploadFile"]
+#define UploadPic [NSString stringWithFormat:@"%@/%@",URL_main,@"system/dfs/uploadFile"]
 
 
 #endif /* URLMacros_h */
