@@ -229,6 +229,17 @@
     NSDictionary *dic = self.dataList[indexPath.row];
     RecordDetailVC *vc = RecordDetailVC.new;
     vc.taskID = StrFromDict(dic, @"id");
+    NSString *type = @"";
+    if ([StrFromDict(dic, @"abnormal") isEqualToString:@"1"]) {
+        type = @"abnormal";
+    } else if ([StrFromDict(dic, @"missed") isEqualToString:@"1"]) {
+        type = @"missed";
+    } else if ([StrFromDict(dic, @"report") isEqualToString:@"1"]) {
+        type = @"report";
+    } else {
+        type = @"";
+    }
+    vc.searchtype = type;
     [self.navigationController pushViewController:vc animated:YES];
 }
 /*

@@ -8,6 +8,7 @@
 
 #import "RecordDetailVC.h"
 #import "RecordDetailCell.h"
+#import "HZPhotoBrowser.h"
 @interface RecordDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 
 @end
@@ -44,7 +45,7 @@
     //    manager.responseSerializer = [AFJSONResponseSerializer serializer]; //默认的
     [manager.requestSerializer setValue:LatestToken forHTTPHeaderField:@"Authorization"];
     
-    [manager GET:XJ_taskDetail parameters:@{@"taskId":self.taskID} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager GET:XJ_taskDetail parameters:@{@"taskId":self.taskID,@"countType":self.searchtype} progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSLog(@"%@",responseObject);
         if ([responseObject valueForKey:@"list"]) {
@@ -83,6 +84,26 @@
     cell.result.text = [dic[@"status"] isEqualToString:@"NORMAL"] ? @"正常" : @"异常" ;
     cell.testnum.text = StrFromDict(dic, @"value");
     cell.descrip.text = StrFromDict(dic, @"remark");
+    if (dic[@"taskResultFiles"]) {
+        NSArray *pics = dic[@"taskResultFiles"];
+        if (pics.count>0) {
+            cell.somePics.hidden = NO;
+            NSMutableArray *marr = [NSMutableArray array];
+            for (NSDictionary *picdic in pics) {
+                [marr addObject:picdic[@"path"]];
+            }
+            [cell.somePics whenTapped:^{
+                HZPhotoBrowser *browser = [[HZPhotoBrowser alloc] init];
+                browser.isFullWidthForLandScape = YES;
+                browser.isNeedLandscape = YES;
+                browser.currentImageIndex = 0;
+                browser.imageArray = [marr copy];
+                [browser show];
+            }];
+        }else {
+            cell.somePics.hidden = YES;
+        }
+    }
     return cell;
 }
 

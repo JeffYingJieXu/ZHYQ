@@ -29,7 +29,6 @@
 
 /**开发服务器*/
 #define URL_main @"http://10.100.40.211:10080"
-//#define URL_main @"http://192.168.11.122:8090" //展鹏
 
 #elif TestSever
 

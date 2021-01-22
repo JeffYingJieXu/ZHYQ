@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RecordDetailVC : RootViewController
 @property(nonatomic,copy) NSString *taskID;
+@property(nonatomic,copy) NSString *searchtype;
 @end
 
 NS_ASSUME_NONNULL_END
